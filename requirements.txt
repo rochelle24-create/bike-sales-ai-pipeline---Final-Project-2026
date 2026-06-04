@@ -1,0 +1,33 @@
+# ============================================================
+# Bike Sales AI Pipeline — Requirements
+# Author: Rachel Barazani — AI Developer
+# Course: AI Developer Program — Hebrew University 2026
+# ============================================================
+
+# Core AI Framework
+crewai>=0.80.0
+crewai-tools>=0.15.0
+
+# LLM Providers
+ollama>=0.4.0
+anthropic>=0.40.0
+langchain-anthropic>=0.3.0
+langchain-ollama>=0.2.0
+
+# Data & ML
+pandas>=2.2.0
+numpy>=1.26.0
+scikit-learn>=1.5.0
+matplotlib>=3.9.0
+seaborn>=0.13.0
+joblib>=1.4.0
+
+# Web App
+streamlit>=1.40.0
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.32.0
+
+# Dev Tools
+black>=24.0.0
