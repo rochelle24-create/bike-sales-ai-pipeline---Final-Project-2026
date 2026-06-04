@@ -5,12 +5,16 @@
 
 import os
 import json
+import pathlib
 import time
 import pandas as pd
 from crewai import Crew, Process
 from crewai.flow.flow import Flow, listen, start
 from utils.progress import progress
 from utils.llm_selector import get_llm
+
+# Ensure working directory is always the project root
+os.chdir(pathlib.Path(__file__).parent.parent)
 
 # Crew 1 imports
 from crew1_analysts.agents import (
