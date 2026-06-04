@@ -210,14 +210,20 @@ def train_models(filepath: str) -> str:
         progress.step("    → Logistic Regression (Quantity)...")
         lr1 = LogisticRegression(max_iter=1000, random_state=RANDOM_SEED)
         lr1.fit(X1_train, y1_train)
-        joblib.dump(lr1, "artifacts/models/quantity_lr.pkl")
+        joblib.dump(lr1, "artifacts/models/quantity_lr.pkl", compress=3)
         progress.step("    ✅ quantity_lr.pkl saved")
 
         # Random Forest
         progress.step("    → Random Forest (Quantity)...")
-        rf1 = RandomForestClassifier(n_estimators=100, random_state=RANDOM_SEED)
+        rf1 = RandomForestClassifier(
+            n_estimators=50,
+            max_depth=15,
+            min_samples_leaf=10,
+            random_state=RANDOM_SEED,
+            n_jobs=-1
+        )
         rf1.fit(X1_train, y1_train)
-        joblib.dump(rf1, "artifacts/models/quantity_rf.pkl")
+        joblib.dump(rf1, "artifacts/models/quantity_rf.pkl", compress=3)
         progress.step("    ✅ quantity_rf.pkl saved")
 
         # Save test data
@@ -243,14 +249,20 @@ def train_models(filepath: str) -> str:
         progress.step("    → Logistic Regression (Bike_Model)...")
         lr2 = LogisticRegression(max_iter=1000, random_state=RANDOM_SEED)
         lr2.fit(X2_train, y2_train)
-        joblib.dump(lr2, "artifacts/models/bike_model_lr.pkl")
+        joblib.dump(lr2, "artifacts/models/bike_model_lr.pkl", compress=3)
         progress.step("    ✅ bike_model_lr.pkl saved")
 
         # Random Forest
         progress.step("    → Random Forest (Bike_Model)...")
-        rf2 = RandomForestClassifier(n_estimators=100, random_state=RANDOM_SEED)
+        rf2 = RandomForestClassifier(
+            n_estimators=50,
+            max_depth=15,
+            min_samples_leaf=10,
+            random_state=RANDOM_SEED,
+            n_jobs=-1
+        )
         rf2.fit(X2_train, y2_train)
-        joblib.dump(rf2, "artifacts/models/bike_model_rf.pkl")
+        joblib.dump(rf2, "artifacts/models/bike_model_rf.pkl", compress=3)
         progress.step("    ✅ bike_model_rf.pkl saved")
 
         # Save test data
@@ -275,14 +287,20 @@ def train_models(filepath: str) -> str:
         progress.step("    → Logistic Regression (Is_Cash)...")
         lr3 = LogisticRegression(max_iter=1000, random_state=RANDOM_SEED)
         lr3.fit(X3_train, y3_train)
-        joblib.dump(lr3, "artifacts/models/payment_lr.pkl")
+        joblib.dump(lr3, "artifacts/models/payment_lr.pkl", compress=3)
         progress.step("    ✅ payment_lr.pkl saved")
 
         # Random Forest
         progress.step("    → Random Forest (Is_Cash)...")
-        rf3 = RandomForestClassifier(n_estimators=100, random_state=RANDOM_SEED)
+        rf3 = RandomForestClassifier(
+            n_estimators=50,
+            max_depth=15,
+            min_samples_leaf=10,
+            random_state=RANDOM_SEED,
+            n_jobs=-1
+        )
         rf3.fit(X3_train, y3_train)
-        joblib.dump(rf3, "artifacts/models/payment_rf.pkl")
+        joblib.dump(rf3, "artifacts/models/payment_rf.pkl", compress=3)
         progress.step("    ✅ payment_rf.pkl saved")
 
         # Save test data

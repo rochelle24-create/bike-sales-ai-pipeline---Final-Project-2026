@@ -22,9 +22,10 @@ Thumbs.db
 # Logs
 logs/*.log
 
-# Model files
-*.pkl
-*.joblib
+# Test data files (large, not needed for app)
+artifacts/models/quantity_test.pkl
+artifacts/models/bike_model_test.pkl
+artifacts/models/payment_test.pkl
 
 # IDE
 .vscode/

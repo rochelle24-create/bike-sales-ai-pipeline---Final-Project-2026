@@ -31,7 +31,7 @@ def get_llm() -> LLM:
     print("║  It is read from your local .env file only.              ║")
     print("╚" + "═" * 58 + "╝")
 
-    choice = input("\nEnter 1, 2 or 3: ").strip()
+    choice = os.getenv("LLM_CHOICE") or input("\nEnter 1, 2 or 3: ").strip()
 
     if choice == "1":
         return _setup_ollama()
@@ -58,7 +58,7 @@ def _setup_ollama() -> LLM:
         )
 
     print("\n  Available models: llama3, mistral, codellama, gemma")
-    model = input("  Model name (press Enter for llama3): ").strip()
+    model = os.getenv("OLLAMA_MODEL") or input("  Model name (press Enter for llama3): ").strip()
     model = model if model else "llama3"
 
     # Verify model is available
