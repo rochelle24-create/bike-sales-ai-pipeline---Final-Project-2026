@@ -7,7 +7,7 @@
 ---
 
 ## Dataset Summary
-- **Total transactions:** 91,918
+- **Total transactions:** 91,923
 - **Date range:** January 2020 → September 2024
 - **Store locations:** 8
 - **Bike models:** 7
@@ -18,17 +18,17 @@
 
 ### Sales Performance
 - **Top performing store:** New York
-- **Best selling bike model:** Road Bike
-- **Peak sales month:** August
+- **Best selling bike model:** Hybrid Bike
+- **Peak sales month:** September
 
 ### Customer Profile
 - **Average customer age:** 44.1 years
-- **Highest purchasing age group:** 55-64
-- **Gender split:** {'Female': 49.063295546030155, 'Male': 48.42577079570922, 'Unknown': 2.510933658260624}
+- **Highest purchasing age group:** 45-54
+- **Gender split:** {'Female': 49.47510416326708, 'Male': 48.01627449060627, 'Unknown': 2.5086213461266493}
 
 ### Payment Behavior
-- **Cash transaction rate:** 16.7% of all sales
-- **Most popular payment method:** Debit Card
+- **Cash transaction rate:** 23.4% of all sales
+- **Most popular payment method:** Cash
 
 ---
 
@@ -61,5 +61,5 @@ credit cards, financing, or digital payment methods.
 | Target | Type | Classes |
 |--------|------|---------|
 | Quantity | Multi-class | 1, 2, 3, 4, 5 |
-| Bike_Model | Multi-class | Hybrid Bike, Mountain Bike, Bmx, Road Bike, Electric Bike, Cruiser, Folding Bike |
+| Bike_Model | Multi-class | Hybrid Bike, Mountain Bike, Folding Bike, Electric Bike, Cruiser, Bmx, Road Bike |
 | Is_Cash | Binary | 0 (Not Cash), 1 (Cash) |

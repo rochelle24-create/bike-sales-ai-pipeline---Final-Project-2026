@@ -12,9 +12,9 @@ Three classification models trained to answer business questions:
 
 | # | Prediction | Type | Best Model | F1 Score |
 |---|-----------|------|-----------|----------|
-| 1 | Purchase Quantity | Multi-class | Random Forest | 19.64% |
-| 2 | Bike Model Recommendation | Multi-class | Random Forest | 18.11% |
-| 3 | Cash Payment Prediction | Binary | Logistic Regression | 75.81% |
+| 1 | Purchase Quantity | Multi-class | Random Forest | 34.54% |
+| 2 | Bike Model Recommendation | Multi-class | Random Forest | 58.58% |
+| 3 | Cash Payment Prediction | Binary | Random Forest | 69.75% |
 
 ---
 
@@ -24,7 +24,7 @@ Three classification models trained to answer business questions:
 - **Source:** Kaggle — jayavarman/bike-sales-data-of-100k
 - **Original file:** bike_sales_100k.csv (not included — see data/README.md)
 - **Pipeline input:** bike_sales_dirty.csv (intentionally dirtied for cleaning demo)
-- **Rows after cleaning:** 91,918
+- **Rows after cleaning:** 91,923
 - **Train/test split:** 80% train / 20% test
 - **Random seed:** 42 (all models)
 

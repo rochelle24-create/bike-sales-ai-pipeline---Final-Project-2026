@@ -2,7 +2,7 @@
   "contract_version": "1.0",
   "created_by": "Crew 1 \u2014 Agent 3",
   "dataset": "Bike Sales Clean Data",
-  "total_rows": 91918,
+  "total_rows": 91923,
   "total_columns": 11,
   "columns": {
     "Sale_ID": {
@@ -39,8 +39,8 @@
     "Price": {
       "type": "float",
       "nullable": false,
-      "min": 200.02,
-      "max": 4999.81,
+      "min": 200.07,
+      "max": 4999.94,
       "description": "Transaction price in USD"
     },
     "Quantity": {
