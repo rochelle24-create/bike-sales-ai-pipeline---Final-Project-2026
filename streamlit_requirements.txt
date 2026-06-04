@@ -1,0 +1,11 @@
+# Streamlit App Requirements
+# Author: Rachel Barazani — AI Developer
+# Course: AI Developer Program — Hebrew University 2026
+
+streamlit
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+joblib
