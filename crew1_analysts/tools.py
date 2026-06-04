@@ -15,6 +15,8 @@ import seaborn as sns
 from io import BytesIO
 from crewai.tools import tool
 from utils.progress import progress
+import warnings
+warnings.filterwarnings("ignore")
 
 # Set seaborn style globally
 sns.set_style("whitegrid")
@@ -227,7 +229,9 @@ def generate_eda_report(filepath: str) -> str:
         # Chart 3 — Price by Bike Model
         progress.step("Generating chart 3 — Price by Bike Model...")
         fig, ax = plt.subplots(figsize=(10, 5))
-        sns.boxplot(data=df, x="Bike_Model", y="Price", ax=ax)
+        bike_models = sorted(df["Bike_Model"].unique())
+        data_to_plot = [df[df["Bike_Model"] == m]["Price"].values for m in bike_models]
+        ax.boxplot(data_to_plot, tick_labels=bike_models)
         ax.set_title("Price Distribution by Bike Model", fontsize=14, fontweight="bold")
         ax.set_xlabel("Bike Model")
         ax.set_ylabel("Price ($)")
