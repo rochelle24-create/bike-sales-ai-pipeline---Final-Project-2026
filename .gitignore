@@ -2,6 +2,7 @@
 .env
 *.env
 .env.*
+!.env.example
 
 # Python
 __pycache__/
@@ -31,7 +32,3 @@ logs/*.log
 
 # Original clean dataset — available on Kaggle, not committed here
 data/bike_sales_100k.csv
-
-# data files
-data/bike_sales_100k.csv
-bike_sales_dirty.csv
