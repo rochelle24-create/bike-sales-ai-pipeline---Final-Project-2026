@@ -51,6 +51,28 @@ def load_model(path):
         return joblib.load(path)
     return None
 
+def get_model_features(model):
+    """Get the exact feature names the model was trained on."""
+    if hasattr(model, "feature_names_in_"):
+        return list(model.feature_names_in_)
+    return None
+
+def safe_encode(encoder, value):
+    try:
+        return encoder.transform([value])[0]
+    except Exception:
+        return 0
+
+def build_feature_matrix(model, all_features):
+    """Build a DataFrame using only the features the model was trained on."""
+    model_features = get_model_features(model)
+    if model_features:
+        return pd.DataFrame(
+            [[all_features.get(f, 0) for f in model_features]],
+            columns=model_features,
+        )
+    return pd.DataFrame([all_features])
+
 def read_markdown(path):
     if artifact_exists(path):
         with open(path, "r", encoding="utf-8") as f:
@@ -180,13 +202,6 @@ elif page == "📦 Prediction 1: Quantity":
 
         if st.button("🔮 Predict Quantity", type="primary"):
             try:
-                # Encode inputs
-                def safe_encode(encoder, value):
-                    try:
-                        return encoder.transform([value])[0]
-                    except:
-                        return 0
-
                 price_tier = "Budget" if price < 500 else "Mid" if price <= 2000 else "Premium"
                 age_group = (
                     "18-24" if age <= 24 else
@@ -196,7 +211,7 @@ elif page == "📦 Prediction 1: Quantity":
                     "55-64" if age <= 64 else "65+"
                 )
 
-                features = {
+                all_features = {
                     "Price": price,
                     "Customer_Age": age,
                     "Salesperson_ID": 500,
@@ -209,14 +224,13 @@ elif page == "📦 Prediction 1: Quantity":
                     "Payment_Method_enc": safe_encode(encoders["Payment_Method"], payment),
                     "Season_enc": safe_encode(encoders["Season"], season),
                     "Age_Group_enc": safe_encode(encoders["Age_Group"], age_group),
-                    "Price_Tier_enc": safe_encode(encoders["Price_Tier"], price_tier)
+                    "Price_Tier_enc": safe_encode(encoders["Price_Tier"], price_tier),
                 }
 
                 rf_model = load_model("artifacts/models/quantity_rf.pkl")
-                lr_model = load_model("artifacts/models/quantity_lr.pkl")
 
                 if rf_model:
-                    X = pd.DataFrame([features])
+                    X = build_feature_matrix(rf_model, all_features)
                     pred = rf_model.predict(X)[0]
                     proba = rf_model.predict_proba(X)[0]
 
@@ -292,12 +306,6 @@ elif page == "🚲 Prediction 2: Bike Model":
 
         if st.button("🚲 Recommend Bike", type="primary"):
             try:
-                def safe_encode(encoder, value):
-                    try:
-                        return encoder.transform([value])[0]
-                    except:
-                        return 0
-
                 price_tier = "Budget" if price < 500 else "Mid" if price <= 2000 else "Premium"
                 age_group = (
                     "18-24" if age <= 24 else
@@ -307,7 +315,7 @@ elif page == "🚲 Prediction 2: Bike Model":
                     "55-64" if age <= 64 else "65+"
                 )
 
-                features = {
+                all_features = {
                     "Price": price,
                     "Quantity": quantity,
                     "Customer_Age": age,
@@ -320,13 +328,13 @@ elif page == "🚲 Prediction 2: Bike Model":
                     "Payment_Method_enc": safe_encode(encoders["Payment_Method"], payment),
                     "Season_enc": safe_encode(encoders["Season"], season),
                     "Age_Group_enc": safe_encode(encoders["Age_Group"], age_group),
-                    "Price_Tier_enc": safe_encode(encoders["Price_Tier"], price_tier)
+                    "Price_Tier_enc": safe_encode(encoders["Price_Tier"], price_tier),
                 }
 
                 rf_model = load_model("artifacts/models/bike_model_rf.pkl")
 
                 if rf_model:
-                    X = pd.DataFrame([features])
+                    X = build_feature_matrix(rf_model, all_features)
                     pred_enc = rf_model.predict(X)[0]
                     proba = rf_model.predict_proba(X)[0]
 
@@ -443,12 +451,6 @@ elif page == "💳 Prediction 3: Cash Payment":
 
         if st.button("💳 Predict Cash Probability", type="primary"):
             try:
-                def safe_encode(encoder, value):
-                    try:
-                        return encoder.transform([value])[0]
-                    except:
-                        return 0
-
                 price_tier = "Budget" if price < 500 else \
                              "Mid" if price <= 2000 else "Premium"
                 age_group = (
@@ -459,7 +461,7 @@ elif page == "💳 Prediction 3: Cash Payment":
                     "55-64" if age <= 64 else "65+"
                 )
 
-                features = {
+                all_features = {
                     "Price": price,
                     "Quantity": 1,
                     "Customer_Age": age,
@@ -477,13 +479,13 @@ elif page == "💳 Prediction 3: Cash Payment":
                     "Age_Group_enc": safe_encode(
                         encoders["Age_Group"], age_group),
                     "Price_Tier_enc": safe_encode(
-                        encoders["Price_Tier"], price_tier)
+                        encoders["Price_Tier"], price_tier),
                 }
 
                 rf_model = load_model("artifacts/models/payment_rf.pkl")
 
                 if rf_model:
-                    X = pd.DataFrame([features])
+                    X = build_feature_matrix(rf_model, all_features)
                     proba = rf_model.predict_proba(X)[0]
                     cash_prob = proba[1] * 100
 

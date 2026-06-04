@@ -1,0 +1,164 @@
+{
+  "contract_version": "1.0",
+  "created_by": "Crew 1 \u2014 Agent 3",
+  "dataset": "Bike Sales Clean Data",
+  "total_rows": 91918,
+  "total_columns": 11,
+  "columns": {
+    "Sale_ID": {
+      "type": "integer",
+      "nullable": false,
+      "unique": true,
+      "description": "Unique transaction identifier"
+    },
+    "Date": {
+      "type": "string",
+      "format": "DD-MM-YYYY",
+      "nullable": false,
+      "description": "Transaction date"
+    },
+    "Customer_ID": {
+      "type": "integer",
+      "nullable": false,
+      "description": "Unique customer identifier"
+    },
+    "Bike_Model": {
+      "type": "string",
+      "nullable": false,
+      "allowed_values": [
+        "Bmx",
+        "Cruiser",
+        "Electric Bike",
+        "Folding Bike",
+        "Hybrid Bike",
+        "Mountain Bike",
+        "Road Bike"
+      ],
+      "description": "Type of bike sold \u2014 Prediction 2 target"
+    },
+    "Price": {
+      "type": "float",
+      "nullable": false,
+      "min": 200.02,
+      "max": 4999.81,
+      "description": "Transaction price in USD"
+    },
+    "Quantity": {
+      "type": "integer",
+      "nullable": false,
+      "min": 1,
+      "max": 5,
+      "allowed_values": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": "Number of bikes purchased \u2014 Prediction 1 target"
+    },
+    "Store_Location": {
+      "type": "string",
+      "nullable": false,
+      "allowed_values": [
+        "Chicago",
+        "Houston",
+        "Los Angeles",
+        "New York",
+        "Philadelphia",
+        "Phoenix",
+        "San Antonio",
+        "Unknown"
+      ],
+      "description": "City where sale occurred"
+    },
+    "Salesperson_ID": {
+      "type": "integer",
+      "nullable": false,
+      "min": 100,
+      "max": 999,
+      "description": "Unique salesperson identifier"
+    },
+    "Payment_Method": {
+      "type": "string",
+      "nullable": false,
+      "allowed_values": [
+        "Apple Pay",
+        "Cash",
+        "Credit Card",
+        "Debit Card",
+        "Google Pay",
+        "PayPal"
+      ],
+      "description": "Payment method \u2014 Prediction 3 source"
+    },
+    "Customer_Age": {
+      "type": "integer",
+      "nullable": false,
+      "min": 18,
+      "max": 70,
+      "description": "Customer age \u2014 critical for Prediction 3"
+    },
+    "Customer_Gender": {
+      "type": "string",
+      "nullable": false,
+      "allowed_values": [
+        "Female",
+        "Male",
+        "Unknown"
+      ],
+      "description": "Customer gender"
+    }
+  },
+  "prediction_targets": {
+    "prediction_1": {
+      "target": "Quantity",
+      "type": "multi-class classification",
+      "classes": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "prediction_2": {
+      "target": "Bike_Model",
+      "type": "multi-class classification",
+      "classes": [
+        "Bmx",
+        "Cruiser",
+        "Electric Bike",
+        "Folding Bike",
+        "Hybrid Bike",
+        "Mountain Bike",
+        "Road Bike"
+      ]
+    },
+    "prediction_3": {
+      "target": "Payment_Method",
+      "type": "binary classification",
+      "derived_feature": "Is_Cash",
+      "positive_class": "Cash",
+      "negative_class": "Not Cash"
+    }
+  },
+  "assumptions": [
+    "Rows with missing Payment_Method were dropped",
+    "Rows with missing Customer_Age were dropped",
+    "Missing Store_Location labeled as Unknown",
+    "Missing Customer_Gender labeled as Unknown",
+    "Price outliers below $10 and above $50,000 removed",
+    "Impossible ages below 18 and above 100 removed",
+    "Negative quantities removed",
+    "All date formats normalized to DD-MM-YYYY",
+    "All string fields stripped of whitespace",
+    "All categorical fields standardized to Title Case"
+  ],
+  "constraints": [
+    "Crew 2 must validate this contract before processing",
+    "Any column not listed here must not be used in modeling",
+    "Target columns must not be imputed",
+    "Random seed must be set to 42 for reproducibility"
+  ]
+}
