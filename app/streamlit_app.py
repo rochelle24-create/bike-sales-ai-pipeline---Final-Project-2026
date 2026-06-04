@@ -4,6 +4,8 @@
 # Course: AI Developer Program — Hebrew University 2026
 
 import os
+import sys
+import pathlib
 import json
 import joblib
 import numpy as np
@@ -13,6 +15,12 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+_PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_PROJECT_ROOT))
+os.chdir(_PROJECT_ROOT)
+
+from utils.references import CASH_PAYMENT_CITATIONS
 
 # ============================================================
 # PAGE CONFIG
@@ -568,6 +576,8 @@ elif page == "💳 Prediction 3: Cash Payment":
 
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown(CASH_PAYMENT_CITATIONS)
 
 
 # ============================================================

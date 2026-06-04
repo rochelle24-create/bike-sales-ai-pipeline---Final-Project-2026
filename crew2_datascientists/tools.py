@@ -23,6 +23,7 @@ from sklearn.metrics import (
 )
 from sklearn.preprocessing import LabelEncoder
 from utils.progress import progress
+from utils.references import CASH_PAYMENT_CITATIONS, DATA_ENHANCEMENT_SECTION
 
 # Ensure directories exist
 os.makedirs("artifacts/models", exist_ok=True)
@@ -568,6 +569,10 @@ Three classification models trained to answer business questions:
 
 ---
 
+{DATA_ENHANCEMENT_SECTION.strip()}
+
+---
+
 ## Prediction 1 — Purchase Quantity
 
 ### Purpose
@@ -658,6 +663,10 @@ All models are fully reproducible:
 - Train/test split: 80/20 (stratified by default)
 - All artifacts saved in /artifacts and /artifacts/models
 - Pipeline can be re-run with: python flow/pipeline.py
+
+---
+
+{CASH_PAYMENT_CITATIONS.strip()}
 
 ---
 

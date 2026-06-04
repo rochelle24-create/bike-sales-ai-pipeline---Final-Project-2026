@@ -7,8 +7,8 @@
 ---
 
 ## Dataset Summary
-- **Total transactions:** 91,923
-- **Date range:** January 2020 → September 2024
+- **Total transactions:** 91,948
+- **Date range:** January 2020 → December 2024
 - **Store locations:** 8
 - **Bike models:** 7
 
@@ -19,12 +19,12 @@
 ### Sales Performance
 - **Top performing store:** New York
 - **Best selling bike model:** Hybrid Bike
-- **Peak sales month:** September
+- **Peak sales month:** December
 
 ### Customer Profile
 - **Average customer age:** 44.1 years
 - **Highest purchasing age group:** 45-54
-- **Gender split:** {'Female': 49.47510416326708, 'Male': 48.01627449060627, 'Unknown': 2.5086213461266493}
+- **Gender split:** {'Female': 49.59868621394701, 'Male': 47.9140383695132, 'Unknown': 2.4872754165397835}
 
 ### Payment Behavior
 - **Cash transaction rate:** 23.4% of all sales
@@ -61,5 +61,20 @@ credit cards, financing, or digital payment methods.
 | Target | Type | Classes |
 |--------|------|---------|
 | Quantity | Multi-class | 1, 2, 3, 4, 5 |
-| Bike_Model | Multi-class | Hybrid Bike, Mountain Bike, Folding Bike, Electric Bike, Cruiser, Bmx, Road Bike |
+| Bike_Model | Multi-class | Hybrid Bike, Mountain Bike, Folding Bike, Electric Bike, Bmx, Cruiser, Road Bike |
 | Is_Cash | Binary | 0 (Not Cash), 1 (Cash) |
+
+---
+
+## References — Payment Behavior Research
+
+External research supporting the cash payment analysis and universal discount recommendation:
+
+1. **Federal Reserve Financial Services** — *2024 Findings from the Diary of Consumer Payment Choice*  
+   https://www.frbservices.org/news/research/2024-findings-from-the-diary-of-consumer-payment-choice
+
+2. **Federal Reserve Bank of Richmond** — *2025 Speaking of the Economy Podcast — Payment Trends*  
+   https://www.richmondfed.org/podcasts/speaking_of_the_economy/2025/speaking_2025_09_17_payments_trends
+
+3. **Federal Reserve Financial Services** — *2025 Diary of Consumer Payment Choice*  
+   https://www.frbservices.org/news/fed360/issues/060325/cash-2025-findings-diary-consumer-payment-choice

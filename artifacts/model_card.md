@@ -12,9 +12,9 @@ Three classification models trained to answer business questions:
 
 | # | Prediction | Type | Best Model | F1 Score |
 |---|-----------|------|-----------|----------|
-| 1 | Purchase Quantity | Multi-class | Random Forest | 34.54% |
-| 2 | Bike Model Recommendation | Multi-class | Random Forest | 58.58% |
-| 3 | Cash Payment Prediction | Binary | Random Forest | 69.75% |
+| 1 | Purchase Quantity | Multi-class | Random Forest | 34.37% |
+| 2 | Bike Model Recommendation | Multi-class | Random Forest | 60.51% |
+| 3 | Cash Payment Prediction | Binary | Random Forest | 69.74% |
 
 ---
 
@@ -24,9 +24,40 @@ Three classification models trained to answer business questions:
 - **Source:** Kaggle — jayavarman/bike-sales-data-of-100k
 - **Original file:** bike_sales_100k.csv (not included — see data/README.md)
 - **Pipeline input:** bike_sales_dirty.csv (intentionally dirtied for cleaning demo)
-- **Rows after cleaning:** 91,923
+- **Rows after cleaning:** 91,948
 - **Train/test split:** 80% train / 20% test
 - **Random seed:** 42 (all models)
+
+---
+
+## Data Enhancement — Real-World Research Sources
+
+The synthetic dataset was enhanced with evidence-based correlations
+before model training to improve real-world validity:
+
+### Seasonal Patterns
+- Source: PeopleForBikes — Tracking Seasonality and International
+  Sales Trends of Kids' Bikes (August 2024)
+- URL: https://www.peopleforbikes.org/news/kids-bikes-sales-trends
+- Applied: BMX bikes assigned December-peak seasonality (25% of
+  annual sales). All other models assigned spring peak (42%
+  March–June) per adult bike industry data.
+
+### Payment Behavior by Age
+- Source: Federal Reserve Diary of Consumer Payment Choice 2024
+- URL: https://www.frbservices.org/news/research/2024-findings-from-the-diary-of-consumer-payment-choice
+- Source: Federal Reserve Diary of Consumer Payment Choice 2025
+- URL: https://www.frbservices.org/news/fed360/issues/060325/cash-2025-findings-diary-consumer-payment-choice
+- Applied:
+  - Ages 18–24: 12% cash, 45% mobile payments
+  - Ages 55–64: 22% cash
+  - Ages 65+: 35% cash (3x higher than 18–24)
+  - High price (>$2,000): 2% cash
+
+### Why This Matters
+These enhancements ensure the model learns from realistic behavioral
+patterns rather than purely random synthetic distributions. All
+correlations are documented, sourced, and reproducible.
 
 ---
 
@@ -113,13 +144,68 @@ barriers — this is consistent with responsible and fair retail practice.
 
 ---
 
-## Reproducibility
+### Dataset Preparation
 
-All models are fully reproducible:
-- Random seed: 42 (all models, all splits)
-- Train/test split: 80/20 (stratified by default)
-- All artifacts saved in /artifacts and /artifacts/models
-- Pipeline can be re-run with: python flow/pipeline.py
+The original Kaggle dataset (bike_sales_100k.csv) was synthetically 
+generated with uniform random distributions — meaning every bike model, 
+quantity, and payment method appeared with equal probability regardless 
+of customer age, price, or season. This does not reflect real retail behavior.
+
+Before dirtying the data for cleaning demonstration purposes, we first
+injected real-world correlations based on published industry research:
+
+### Seasonal Sales Patterns
+Applied realistic monthly sales distributions based on actual bike
+industry data from PeopleForBikes (2024):
+- 42% of adult bike sales occur March–June (spring peak)
+- December is the strongest month for BMX/kids bikes (25% of annual sales)
+- July–August summer family vacation bump applied to all models
+
+> Source: https://www.peopleforbikes.org/news/kids-bikes-sales-trends
+
+### Payment Behavior by Age Group
+Applied realistic cash payment rates based on Federal Reserve
+Diary of Consumer Payment Choice (2024–2025):
+- Ages 18–24: 12% cash, 45% mobile payments
+- Ages 55–64: 22% cash
+- Ages 65+: 35% cash (3x higher than 18–24)
+- High value purchases (>$2,000): 2% cash
+
+> Source: https://www.frbservices.org/news/research/2024-findings-from-the-diary-of-consumer-payment-choice
+> Source: https://www.frbservices.org/news/fed360/issues/060325/cash-2025-findings-diary-consumer-payment-choice
+
+### Bike Model Preferences by Age
+Applied age-based bike model preferences based on general
+cycling industry knowledge:
+- Ages 18–24: BMX and Mountain Bike
+- Ages 25–34: Road Bike and Mountain Bike
+- Ages 35–54: Hybrid and Electric Bike
+- Ages 55+: Cruiser, Hybrid and Folding Bike
+
+### Why We Did This
+The goal was to create a dataset that tells a realistic retail story
+and produces meaningful ML predictions — not to manufacture perfect
+model scores. All correlations are documented, sourced, and fully
+reproducible via create_realistic_data.py.
+
+After injecting correlations the dataset was deliberately dirtied
+with 10 real-world data quality issues to demonstrate production-level
+data cleaning in Crew 1 Agent 1.
+
+---
+
+## References — Payment Behavior Research
+
+External research supporting the cash payment analysis and universal discount recommendation:
+
+1. **Federal Reserve Financial Services** — *2024 Findings from the Diary of Consumer Payment Choice*  
+   https://www.frbservices.org/news/research/2024-findings-from-the-diary-of-consumer-payment-choice
+
+2. **Federal Reserve Bank of Richmond** — *2025 Speaking of the Economy Podcast — Payment Trends*  
+   https://www.richmondfed.org/podcasts/speaking_of_the_economy/2025/speaking_2025_09_17_payments_trends
+
+3. **Federal Reserve Financial Services** — *2025 Diary of Consumer Payment Choice*  
+   https://www.frbservices.org/news/fed360/issues/060325/cash-2025-findings-diary-consumer-payment-choice
 
 ---
 

@@ -15,6 +15,7 @@ import seaborn as sns
 from io import BytesIO
 from crewai.tools import tool
 from utils.progress import progress
+from utils.references import CASH_PAYMENT_CITATIONS
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -524,6 +525,10 @@ credit cards, financing, or digital payment methods.
 | Quantity | Multi-class | 1, 2, 3, 4, 5 |
 | Bike_Model | Multi-class | {", ".join(df["Bike_Model"].unique().tolist())} |
 | Is_Cash | Binary | 0 (Not Cash), 1 (Cash) |
+
+---
+
+{CASH_PAYMENT_CITATIONS.strip()}
 """
 
         with open("artifacts/insights.md", "w", encoding="utf-8") as f:

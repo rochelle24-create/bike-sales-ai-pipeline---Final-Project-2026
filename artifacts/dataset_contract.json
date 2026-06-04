@@ -2,7 +2,7 @@
   "contract_version": "1.0",
   "created_by": "Crew 1 \u2014 Agent 3",
   "dataset": "Bike Sales Clean Data",
-  "total_rows": 91923,
+  "total_rows": 91948,
   "total_columns": 11,
   "columns": {
     "Sale_ID": {

@@ -220,19 +220,67 @@ all_stores = ["Philadelphia", "Chicago", "San Antonio",
 
 def assign_store(row):
     model = row["Bike_Model"]
-    preferred = store_bike_bias.get(model, all_stores)
     r = np.random.random()
-    if r < 0.60:
+    preferred = store_bike_bias.get(model, all_stores)
+
+    if r < 0.70:
         return np.random.choice(preferred)
-    else:
-        return np.random.choice(all_stores)
+    return np.random.choice(all_stores)
 
 df["Store_Location"] = df.apply(assign_store, axis=1)
 
-print(f"\nCorrelations injected successfully!")
-print(f"Bike Model distribution:\n{df['Bike_Model'].value_counts()}")
-print(f"\nQuantity distribution:\n{df['Quantity'].value_counts().sort_index()}")
-print(f"\nPayment distribution:\n{df['Payment_Method'].value_counts()}")
+# --- Realistic Seasonal Date Distribution ---
+print("  Assigning realistic seasonal dates...")
+
+import calendar
+
+adult_monthly_weights = {
+    1: 0.04,
+    2: 0.05,
+    3: 0.09,
+    4: 0.11,
+    5: 0.12,
+    6: 0.10,
+    7: 0.09,
+    8: 0.08,
+    9: 0.06,
+    10: 0.05,
+    11: 0.05,
+    12: 0.16,
+}
+
+kids_monthly_weights = {
+    1: 0.03,
+    2: 0.04,
+    3: 0.07,
+    4: 0.09,
+    5: 0.10,
+    6: 0.08,
+    7: 0.09,
+    8: 0.08,
+    9: 0.05,
+    10: 0.04,
+    11: 0.08,
+    12: 0.25,
+}
+
+def assign_date(row):
+    model = row["Bike_Model"]
+    if model == "BMX":
+        weights = kids_monthly_weights
+    else:
+        weights = adult_monthly_weights
+
+    months = list(weights.keys())
+    probs = list(weights.values())
+    month = np.random.choice(months, p=probs)
+    year = np.random.choice([2020, 2021, 2022, 2023, 2024])
+    max_day = calendar.monthrange(year, month)[1]
+    day = np.random.randint(1, max_day + 1)
+    return f"{day:02d}-{month:02d}-{year}"
+
+df["Date"] = df.apply(assign_date, axis=1)
+print("  Dates assigned with realistic seasonal distribution")
 
 # ============================================================
 # STEP 2 — INJECT REALISTIC DIRT
