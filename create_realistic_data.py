@@ -125,12 +125,20 @@ def assign_quantity(row):
         elif r < 0.98: return 4
         else: return 5
 
-    # Families and mid age buy more
+    # Strong family purchase: mid-age + budget non-electric
+    if 35 <= age <= 54 and price < 1200 and model != "Electric Bike":
+        if r < 0.05: return 1
+        elif r < 0.20: return 2
+        elif r < 0.55: return 3
+        elif r < 0.80: return 4
+        else: return 5
+
+    # Mid-age buying expensive or electric bikes — solo purchase
     if 35 <= age <= 54:
-        if r < 0.25: return 1
-        elif r < 0.50: return 2
-        elif r < 0.72: return 3
-        elif r < 0.88: return 4
+        if r < 0.35: return 1
+        elif r < 0.60: return 2
+        elif r < 0.80: return 3
+        elif r < 0.93: return 4
         else: return 5
 
     # Budget bikes bought in bulk

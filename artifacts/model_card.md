@@ -12,9 +12,9 @@ Three classification models trained to answer business questions:
 
 | # | Prediction | Type | Best Model | F1 Score |
 |---|-----------|------|-----------|----------|
-| 1 | Purchase Quantity | Multi-class | Random Forest | 30.61% |
-| 2 | Bike Model Recommendation | Multi-class | Random Forest | 60.66% |
-| 3 | Cash Payment Prediction | Binary | Random Forest | 67.74% |
+| 1 | Purchase Quantity | Multi-class | Random Forest | 39.02% |
+| 2 | Bike Model Recommendation | Multi-class | Random Forest | 61.51% |
+| 3 | Cash Payment Prediction | Binary | Random Forest | 71.39% |
 
 ---
 

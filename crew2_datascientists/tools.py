@@ -121,6 +121,14 @@ def engineer_features(filepath: str) -> str:
         df["Is_Cash"] = (df["Payment_Method"] == "Cash").astype(int)
         progress.step("Created feature: Is_Cash (Prediction 3 target)")
 
+        # Engineer Is_Family_Buyer — strong signal for multi-unit quantity
+        df["Is_Family_Buyer"] = (
+            df["Customer_Age"].between(35, 54) &
+            (df["Price"] < 1200) &
+            (df["Bike_Model"] != "Electric Bike")
+        ).astype(int)
+        progress.step("Created feature: Is_Family_Buyer")
+
         # Label encode categoricals
         progress.step("Label encoding categorical columns...")
         categorical_cols = [
@@ -185,10 +193,10 @@ def train_models(filepath: str) -> str:
             "Payment_Method", "Season", "Age_Group", "Price_Tier"
         ]
 
-        # Base encoded feature columns
+        # Base encoded feature columns (Salesperson_ID excluded — noise)
         base_features = [
-            "Price", "Quantity", "Customer_Age", "Salesperson_ID",
-            "Month", "Day_of_Week", "Is_Weekend",
+            "Price", "Quantity", "Customer_Age",
+            "Month", "Day_of_Week", "Is_Weekend", "Is_Family_Buyer",
             "Bike_Model_enc", "Store_Location_enc", "Customer_Gender_enc",
             "Payment_Method_enc", "Season_enc", "Age_Group_enc", "Price_Tier_enc"
         ]
@@ -203,12 +211,14 @@ def train_models(filepath: str) -> str:
         y1 = df["Quantity"]
 
         X1_train, X1_test, y1_train, y1_test = train_test_split(
-            X1, y1, test_size=0.2, random_state=RANDOM_SEED
+            X1, y1, test_size=0.2, random_state=RANDOM_SEED, stratify=y1
         )
 
         # Logistic Regression
         progress.step("    → Logistic Regression (Quantity)...")
-        lr1 = LogisticRegression(max_iter=1000, random_state=RANDOM_SEED)
+        lr1 = LogisticRegression(
+            max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
+        )
         lr1.fit(X1_train, y1_train)
         joblib.dump(lr1, "artifacts/models/quantity_lr.pkl", compress=3)
         progress.step("    ✅ quantity_lr.pkl saved")
@@ -216,9 +226,10 @@ def train_models(filepath: str) -> str:
         # Random Forest
         progress.step("    → Random Forest (Quantity)...")
         rf1 = RandomForestClassifier(
-            n_estimators=50,
-            max_depth=15,
-            min_samples_leaf=10,
+            n_estimators=100,
+            max_depth=20,
+            min_samples_leaf=5,
+            class_weight="balanced",
             random_state=RANDOM_SEED,
             n_jobs=-1
         )
@@ -242,12 +253,14 @@ def train_models(filepath: str) -> str:
         y2 = df["Bike_Model_enc"]
 
         X2_train, X2_test, y2_train, y2_test = train_test_split(
-            X2, y2, test_size=0.2, random_state=RANDOM_SEED
+            X2, y2, test_size=0.2, random_state=RANDOM_SEED, stratify=y2
         )
 
         # Logistic Regression
         progress.step("    → Logistic Regression (Bike_Model)...")
-        lr2 = LogisticRegression(max_iter=1000, random_state=RANDOM_SEED)
+        lr2 = LogisticRegression(
+            max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
+        )
         lr2.fit(X2_train, y2_train)
         joblib.dump(lr2, "artifacts/models/bike_model_lr.pkl", compress=3)
         progress.step("    ✅ bike_model_lr.pkl saved")
@@ -255,9 +268,10 @@ def train_models(filepath: str) -> str:
         # Random Forest
         progress.step("    → Random Forest (Bike_Model)...")
         rf2 = RandomForestClassifier(
-            n_estimators=50,
-            max_depth=15,
-            min_samples_leaf=10,
+            n_estimators=100,
+            max_depth=20,
+            min_samples_leaf=5,
+            class_weight="balanced",
             random_state=RANDOM_SEED,
             n_jobs=-1
         )
@@ -280,12 +294,14 @@ def train_models(filepath: str) -> str:
         y3 = df["Is_Cash"]
 
         X3_train, X3_test, y3_train, y3_test = train_test_split(
-            X3, y3, test_size=0.2, random_state=RANDOM_SEED
+            X3, y3, test_size=0.2, random_state=RANDOM_SEED, stratify=y3
         )
 
         # Logistic Regression
         progress.step("    → Logistic Regression (Is_Cash)...")
-        lr3 = LogisticRegression(max_iter=1000, random_state=RANDOM_SEED)
+        lr3 = LogisticRegression(
+            max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
+        )
         lr3.fit(X3_train, y3_train)
         joblib.dump(lr3, "artifacts/models/payment_lr.pkl", compress=3)
         progress.step("    ✅ payment_lr.pkl saved")
@@ -293,9 +309,10 @@ def train_models(filepath: str) -> str:
         # Random Forest
         progress.step("    → Random Forest (Is_Cash)...")
         rf3 = RandomForestClassifier(
-            n_estimators=50,
-            max_depth=15,
-            min_samples_leaf=10,
+            n_estimators=100,
+            max_depth=20,
+            min_samples_leaf=5,
+            class_weight="balanced",
             random_state=RANDOM_SEED,
             n_jobs=-1
         )
