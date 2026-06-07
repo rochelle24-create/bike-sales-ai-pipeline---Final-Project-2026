@@ -220,7 +220,7 @@ def train_models(filepath: str) -> str:
             max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
         )
         lr1.fit(X1_train, y1_train)
-        joblib.dump(lr1, "artifacts/models/quantity_lr.pkl", compress=3)
+        joblib.dump(lr1, "artifacts/models/quantity_lr.pkl", compress=6)
         progress.step("    ✅ quantity_lr.pkl saved")
 
         # Random Forest
@@ -234,7 +234,7 @@ def train_models(filepath: str) -> str:
             n_jobs=-1
         )
         rf1.fit(X1_train, y1_train)
-        joblib.dump(rf1, "artifacts/models/quantity_rf.pkl", compress=3)
+        joblib.dump(rf1, "artifacts/models/quantity_rf.pkl", compress=6)
         progress.step("    ✅ quantity_rf.pkl saved")
 
         # Save test data
@@ -262,7 +262,7 @@ def train_models(filepath: str) -> str:
             max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
         )
         lr2.fit(X2_train, y2_train)
-        joblib.dump(lr2, "artifacts/models/bike_model_lr.pkl", compress=3)
+        joblib.dump(lr2, "artifacts/models/bike_model_lr.pkl", compress=6)
         progress.step("    ✅ bike_model_lr.pkl saved")
 
         # Random Forest
@@ -276,7 +276,7 @@ def train_models(filepath: str) -> str:
             n_jobs=-1
         )
         rf2.fit(X2_train, y2_train)
-        joblib.dump(rf2, "artifacts/models/bike_model_rf.pkl", compress=3)
+        joblib.dump(rf2, "artifacts/models/bike_model_rf.pkl", compress=6)
         progress.step("    ✅ bike_model_rf.pkl saved")
 
         # Save test data
@@ -303,7 +303,7 @@ def train_models(filepath: str) -> str:
             max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
         )
         lr3.fit(X3_train, y3_train)
-        joblib.dump(lr3, "artifacts/models/payment_lr.pkl", compress=3)
+        joblib.dump(lr3, "artifacts/models/payment_lr.pkl", compress=6)
         progress.step("    ✅ payment_lr.pkl saved")
 
         # Random Forest
@@ -317,7 +317,7 @@ def train_models(filepath: str) -> str:
             n_jobs=-1
         )
         rf3.fit(X3_train, y3_train)
-        joblib.dump(rf3, "artifacts/models/payment_rf.pkl", compress=3)
+        joblib.dump(rf3, "artifacts/models/payment_rf.pkl", compress=6)
         progress.step("    ✅ payment_rf.pkl saved")
 
         # Save test data
