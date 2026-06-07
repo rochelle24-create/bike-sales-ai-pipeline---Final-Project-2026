@@ -34,25 +34,48 @@
 
 ## Payment Barrier Observation
 
-Ages **65+** and **18-24** show the lowest 
-overall transaction frequency in the dataset. Cross-referenced with 
-payment method data, these groups also show lower digital payment usage 
-— suggesting a potential **payment access barrier** rather than lack of 
-interest in bike purchases.
+**23.4% of all transactions are paid in cash** — making cash the most
+common single payment method in the dataset. Ages **65+** and **18-24**
+show the lowest overall transaction frequency, and also show the highest
+cash reliance — suggesting a potential **payment access barrier** rather
+than lack of interest in bike purchases.
 
 ### Universal Cash Discount Recommendation
-A store-wide cash discount — available equally to **ALL customers** — 
-removes the payment barrier for customers who may not have access to 
-credit cards, financing, or digital payment methods.
 
-**Expected new segments most likely to respond:**
-- Ages 18-24: limited credit history, building financial independence
-- Ages 65+: may prefer or rely on cash transactions
+> **The recommended cash discount is offered to ALL customers equally —
+> regardless of age, gender, store location, or any personal characteristic.
+> This is a store-wide pricing strategy, not a targeted promotion.**
 
-> ⚠️ **Important:** This discount applies universally to all customers.  
-> The analysis identifies who benefits most — it does **not** determine  
-> who qualifies. No customer is excluded or targeted based on age,  
-> gender, or any personal characteristic.
+The AI model identifies *who is likely to pay cash* — it does not determine
+who qualifies for the discount. Every customer who walks through the door
+is eligible, full stop.
+
+**The business case has four parts:**
+
+**1. Attract new customers currently blocked by payment barriers**
+Ages 18–24 and 65+ show the highest cash reliance in our data. A visible
+cash discount signals to these groups that the store welcomes them —
+removing the silent barrier that digital-only pricing creates.
+
+**2. Reward existing cash-paying customers**
+23.4% of current customers already pay cash. A discount rewards their
+loyalty and deepens retention at no cost to acquisition.
+
+**3. Incentivise existing customers to switch to cash**
+A cash discount gives every digital-payment customer a positive reason
+to consider paying cash. That 23.4% figure has room to grow — and the
+store benefits every time it does.
+
+**4. The discount can be self-funding**
+Credit and debit card processing fees typically run 1.5–3.5% per
+transaction. A 2% cash discount costs less than the fees it replaces
+on converted transactions — making the promotion financially sustainable.
+
+**In summary:** This is not a demographic strategy. It is a universal
+pricing tool that removes a payment barrier, rewards loyal customers,
+incentivises cash adoption, and can pay for itself through fee savings.
+The prediction model makes it operationally actionable — staff can
+proactively offer the discount at point of sale.
 
 ---
 
@@ -66,15 +89,21 @@ credit cards, financing, or digital payment methods.
 
 ---
 
-## References — Payment Behavior Research
+## References — Sources Used as Directional Guidance
 
-External research supporting the cash payment analysis and universal discount recommendation:
+The following sources informed the direction of our synthetic payment
+correlations. They were used as guidance only — no data was directly
+copied or applied from these reports. The specific values in our dataset
+are synthetic design choices.
 
-1. **Federal Reserve Financial Services** — *2024 Findings from the Diary of Consumer Payment Choice*  
+1. **PeopleForBikes** — *Tracking Seasonality and International Sales Trends of Kids' Bikes (August 2024)*
+   https://www.peopleforbikes.org/news/kids-bikes-sales-trends
+
+2. **Federal Reserve Financial Services** — *2024 Findings from the Diary of Consumer Payment Choice*
    https://www.frbservices.org/news/research/2024-findings-from-the-diary-of-consumer-payment-choice
 
-2. **Federal Reserve Bank of Richmond** — *2025 Speaking of the Economy Podcast — Payment Trends*  
-   https://www.richmondfed.org/podcasts/speaking_of_the_economy/2025/speaking_2025_09_17_payments_trends
-
-3. **Federal Reserve Financial Services** — *2025 Diary of Consumer Payment Choice*  
+3. **Federal Reserve Financial Services** — *2025 Diary of Consumer Payment Choice*
    https://www.frbservices.org/news/fed360/issues/060325/cash-2025-findings-diary-consumer-payment-choice
+
+4. **Federal Reserve Bank of Richmond** — *2025 Speaking of the Economy — Payment Trends*
+   https://www.richmondfed.org/podcasts/speaking_of_the_economy/2025/speaking_2025_09_17_payments_trends
