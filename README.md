@@ -82,8 +82,12 @@ This pipeline supports two AI backends selected at startup:
 | Option | Backend | Cost | Use Case |
 |--------|---------|------|----------|
 | 1 | Ollama (local) | Free | Development + testing |
-| 2 | Anthropic Haiku | ~$0.02/run | Budget cloud option |
-| 3 | Anthropic Sonnet | ~$0.08/run | Final submission run |
+| 2 | Anthropic Haiku | ~$0.00/run | Budget cloud option |
+| 3 | Anthropic Sonnet | ~$0.00/run | Final submission run |
+
+> **Note:** Cost is effectively $0.00 because all 7 pipeline tools run pure
+> Python (pandas, scikit-learn, matplotlib). The LLM is initialised at
+> startup but never invoked — no tokens are processed.
 
 > **:warning: Your API key is _never_ stored in GitHub — it is always read from your local `.env` file only! :warning:**
 
@@ -129,7 +133,7 @@ python flow/pipeline.py
 bike-sales-ai-pipeline---Final-Project-2026/
 ├── data/
 │   ├── bike_sales_dirty.csv        pipeline input (dirtied dataset)
-│   └── bike_sales_100k.csv         original Kaggle source
+│   └── bike_sales_100k.csv         original Kaggle source (gitignored — download separately)
 ├── artifacts/                      all pipeline outputs
 │   ├── clean_data.csv
 │   ├── eda_report.html

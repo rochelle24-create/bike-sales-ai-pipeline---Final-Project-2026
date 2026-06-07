@@ -12,10 +12,11 @@ Three layers:
 
 ### Actual Cost of Final Run
 
-Estimated: under $0.10 because direct tool calls mean the LLM
-is only invoked for Agent 3 and Agent 7 narrative writing.
-All data processing, ML training, and chart generation runs
-in Python with zero LLM calls.
+Effectively $0.00. All 7 pipeline tools run pure Python — pandas,
+scikit-learn, matplotlib, and f-string templates. The LLM is
+initialised at startup via get_llm() but never called during
+execution. No tokens are processed regardless of whether you
+select Haiku or Sonnet.
 
 ---
 
@@ -230,9 +231,9 @@ by us as a learnable synthetic benchmark, not copied from these reports.
 - Separating streamlit_requirements.txt from requirements.txt —
   clean deployment without unnecessary dependencies
 - Model compression (n_estimators=100, max_depth=20, compress=6) —
-  reduced 600MB files to under 50MB with minimal F1 impact
-- Baking citations into tools.py constants — survive every pipeline
-  re-run automatically
+  reduced 600MB+ files to under 50MB with minimal F1 impact
+- Baking report content into tools.py constants — survives every
+  pipeline re-run automatically
 
 ### What was challenging
 
