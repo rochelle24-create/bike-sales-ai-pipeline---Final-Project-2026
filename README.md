@@ -39,40 +39,39 @@ to business insights and predictive models — answering three questions:
 
 | # | Target | Type | Best Model | F1 Score |
 |---|--------|------|-----------|----------|
-| 1 | Purchase Quantity | Multi-class | Random Forest | 34.37% |
-| 2 | Bike Model Recommendation | Multi-class | Random Forest | 60.51% |
-| 3 | Cash Payment Prediction | Binary | Random Forest | 69.74% |
+| 1 | Purchase Quantity | Multi-class | Random Forest | 39.02% |
+| 2 | Bike Model Recommendation | Multi-class | Random Forest | 61.51% |
+| 3 | Cash Payment Prediction | Binary | Random Forest | 71.39% |
 
 Prediction 3 is the core business insight — identifying payment barriers
-and recommending a universal cash discount strategy backed by Federal
-Reserve payment data.
+and recommending a universal cash discount strategy to bring underserved
+customer groups into the stores.
 
 ---
 
 ## Pipeline Architecture
 
-The file got cut off at Pipeline Architecture. The rest didn't paste.
-In Cursor place your cursor at the very end of the file after ## Pipeline Architecture and paste this:
-
+```
 bike_sales_dirty.csv  (100,200 rows — deliberately dirtied)
-|
+        |
 CREW 1 — Data Analyst Crew (3 agents)
-Agent 1 — Ingest, validate, clean — 91,918 rows
-Agent 2 — EDA + 12 visualizations — eda_report.html
-Agent 3 — Business insights + dataset contract
-|
+  Agent 1 — Ingest, validate, clean → 91,948 rows
+  Agent 2 — EDA + 12 visualizations → eda_report.html
+  Agent 3 — Business insights + dataset contract
+        |
 CrewAI Flow — Validation Checkpoint
-Schema validation
-Contract match
-Required features check
-|
+  Schema validation
+  Contract match
+  Required features check
+        |
 CREW 2 — Data Scientist Crew (4 agents)
-Agent 4 — Feature engineering (25 features)
-Agent 5 — Train 6 models across 3 predictions
-Agent 6 — Evaluate + compare models
-Agent 7 — Model card + business recommendation
-|
+  Agent 4 — Feature engineering (25 features)
+  Agent 5 — Train 6 models across 3 predictions
+  Agent 6 — Evaluate + compare models
+  Agent 7 — Model card + business recommendation
+        |
 Streamlit App — 5 pages (live deployment)
+```
 
 ---
 
@@ -125,27 +124,30 @@ python flow/pipeline.py
 ---
 
 ## Project Structure
+
+```
 bike-sales-ai-pipeline---Final-Project-2026/
-|-- data/
-|   |-- bike_sales_dirty.csv        pipeline input (dirtied dataset)
-|   |-- README.md                   data documentation + Kaggle source
-|-- artifacts/                      all pipeline outputs
-|   |-- clean_data.csv
-|   |-- eda_report.html
-|   |-- insights.md
-|   |-- dataset_contract.json
-|   |-- features.csv
-|   |-- evaluation_report.md
-|   |-- model_card.md
-|   |-- models/                     6 trained models + evaluation charts
-|-- crew1_analysts/                 3 analyst agents
-|-- crew2_datascientists/           4 data scientist agents
-|-- flow/                           CrewAI Flow + validation checkpoints
-|-- app/                            Streamlit web app (5 pages)
-|-- utils/                          progress logger + LLM selector
-|-- create_realistic_data.py        data preparation script
-|-- requirements.txt                full pipeline dependencies
-|-- streamlit_requirements.txt      deployment dependencies
+├── data/
+│   ├── bike_sales_dirty.csv        pipeline input (dirtied dataset)
+│   └── bike_sales_100k.csv         original Kaggle source
+├── artifacts/                      all pipeline outputs
+│   ├── clean_data.csv
+│   ├── eda_report.html
+│   ├── insights.md
+│   ├── dataset_contract.json
+│   ├── features.csv
+│   ├── evaluation_report.md
+│   ├── model_card.md
+│   └── models/                     6 trained models + evaluation charts
+├── crew1_analysts/                 3 analyst agents
+├── crew2_datascientists/           4 data scientist agents
+├── flow/                           CrewAI Flow + validation checkpoints
+├── app/                            Streamlit web app (5 pages)
+├── utils/                          progress logger + LLM selector
+├── create_realistic_data.py        data preparation script
+├── requirements.txt                full pipeline dependencies
+└── streamlit_requirements.txt      deployment dependencies
+```
 
 ---
 
@@ -153,7 +155,7 @@ bike-sales-ai-pipeline---Final-Project-2026/
 
 | Output | Description |
 |--------|-------------|
-| clean_data.csv | 91,918 rows after cleaning 10 data quality issues |
+| clean_data.csv | 91,948 rows after cleaning 10 data quality issues |
 | eda_report.html | 12 embedded charts — self-contained HTML |
 | insights.md | Business narrative + payment barrier observation |
 | dataset_contract.json | Schema contract validated before Crew 2 |
@@ -166,39 +168,59 @@ bike-sales-ai-pipeline---Final-Project-2026/
 
 ## Data Preparation
 
-### Step 1 — Real-World Correlations Injected
+The original Kaggle dataset contained perfectly uniform random distributions
+with no real-world behavioral patterns. Before dirtying the data, we
+injected realistic synthetic correlations to create a learnable benchmark.
+These are not claims about real customer data — they are deliberate design
+decisions that make each prediction meaningful and explainable.
 
-The original Kaggle dataset had perfectly uniform random distributions
-which do not reflect real retail behavior. Before dirtying the data,
-evidence-based correlations were injected from published research.
+### Prediction 1 — Purchase Quantity
 
-**Seasonal Sales Patterns**
+**What we changed:** Family purchase behavior was injected for customers
+aged 35–54 buying budget or mid-range bikes (under $1,200, non-electric).
+This group was assigned a 95% probability of buying 2 or more bikes per
+transaction, reflecting the real-world pattern of parents buying bikes
+for multiple children. We also added an `Is_Family_Buyer` interaction
+feature that explicitly captures this combination (age 35–54 + price
+under $1,200 + non-electric bike).
 
-Based on PeopleForBikes (August 2024):
-- 42% of adult bikes sold March through June (spring peak)
-- December accounts for 25% of BMX annual sales (Christmas gifts)
-- July through August summer family vacation bump
+**Why it reflects reality:** A 40-year-old buying a $400 BMX is far more
+likely to be buying for a child — or buying two — than a 25-year-old
+making a solo purchase. Without this signal, the model sees random
+quantity values with no learnable pattern.
 
-Source: https://www.peopleforbikes.org/news/kids-bikes-sales-trends
+### Prediction 2 — Bike Model Recommendation
 
-**Payment Behavior by Age Group**
+**What we changed:** Bike model preferences were assigned based on
+age-group correlations typical of the cycling retail industry:
+- Ages 18–24: BMX and Mountain Bike (active/youth)
+- Ages 25–34: Road Bike and Mountain Bike (fitness-focused)
+- Ages 35–54: Hybrid and Electric Bike (commuting/leisure)
+- Ages 55+: Cruiser, Hybrid, and Folding Bike (comfort/ease)
 
-Based on Federal Reserve Diary of Consumer Payment Choice (2024-2025):
-- Ages 18-24: 12% cash, 45% mobile payments
-- Ages 55-64: 22% cash
-- Ages 65+: 35% cash (3x higher than ages 18-24)
-- High value purchases over $2,000: 2% cash
+Price was then assigned per bike model within realistic market ranges
+(e.g. Electric Bikes $1,500–$5,000, BMX $200–$800).
 
-Source: https://www.frbservices.org/news/research/2024-findings-from-the-diary-of-consumer-payment-choice
-Source: https://www.frbservices.org/news/fed360/issues/060325/cash-2025-findings-diary-consumer-payment-choice
+**Why it reflects reality:** These age-to-model correlations are
+observable patterns in cycling retail. Without them, the dataset would
+have seniors buying BMX bikes and teenagers buying Electric Bikes at
+equal rates — producing a model that learns nothing useful.
 
-**Bike Model Preferences by Age**
+### Prediction 3 — Cash Payment Prediction
 
-Based on general retail cycling industry knowledge:
-- Ages 18-24: BMX and Mountain Bike
-- Ages 25-34: Road Bike and Mountain Bike
-- Ages 35-54: Hybrid and Electric Bike
-- Ages 55+: Cruiser, Hybrid and Folding Bike
+**What we changed:** Payment method was assigned based on age and price
+correlations we designed ourselves as a synthetic benchmark:
+- Ages 18–24: 35% cash (limited credit access, budget purchases)
+- Ages 65+: 40% cash (stronger preference for physical currency)
+- Purchases over $2,000: 5% cash (high-value items go on credit)
+- Purchases under $500: 45% cash (small-value items paid in cash)
+
+**Why it reflects reality:** These are directionally consistent with
+widely observed consumer payment behavior — younger and older customers
+rely more on cash, premium purchases go on credit — but they are
+synthetic correlations we injected, not measured values from any
+external dataset. The framing is honest: we built a learnable benchmark
+that produces a meaningful business insight about payment barriers.
 
 ### Step 2 — 10 Data Quality Issues Injected
 
@@ -220,13 +242,13 @@ Based on general retail cycling industry knowledge:
 ## Core Business Insight
 
 Our AI pipeline identified a payment barrier affecting two underserved
-age groups — and recommends a universal cash discount strategy backed
-by Federal Reserve payment data to bring them into our stores.
+age groups — ages 18–24 and 65+ — who show the lowest purchase frequency
+and the highest cash payment reliance in our synthetic model.
 
-Ages 18-24 and 65+ show the lowest purchase frequency and the highest
-cash payment reliance. A universal cash discount — available to all
-customers equally — removes the payment barrier without targeting or
-excluding any demographic.
+A universal cash discount — available to all customers equally — removes
+the payment barrier without targeting or excluding any demographic.
+The recommendation applies universally regardless of age, gender,
+location, or any personal characteristic.
 
 ---
 
