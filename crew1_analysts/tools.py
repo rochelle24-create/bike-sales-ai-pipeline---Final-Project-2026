@@ -1,7 +1,7 @@
 # crew1_analysts/tools.py
-# Crew 1 — Data Analyst Crew — Custom Tools
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# Crew 1 - Data Analyst Crew - Custom Tools
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 import os
 import json
@@ -29,7 +29,7 @@ os.makedirs("artifacts/models", exist_ok=True)
 
 
 # ============================================================
-# TOOL 1 — Load and Clean Dataset
+# TOOL 1 - Load and Clean Dataset
 # ============================================================
 @tool("load_and_clean_data")
 def load_and_clean_data(filepath: str) -> str:
@@ -38,15 +38,15 @@ def load_and_clean_data(filepath: str) -> str:
     Returns a summary of cleaning actions taken.
     """
     try:
-        progress.agent_start("Agent 1 — Data Ingestion & Cleaning")
+        progress.agent_start("Agent 1 - Data Ingestion & Cleaning")
 
-        # STEP 1 — Load
+        # STEP 1 - Load
         progress.step(f"Loading {filepath}...")
         df = pd.read_csv(filepath)
         initial_rows = len(df)
         progress.step(f"{initial_rows:,} rows loaded")
 
-        # STEP 2 — Validate columns
+        # STEP 2 - Validate columns
         required_columns = [
             "Sale_ID", "Date", "Customer_ID", "Bike_Model", "Price",
             "Quantity", "Store_Location", "Salesperson_ID",
@@ -55,30 +55,30 @@ def load_and_clean_data(filepath: str) -> str:
         missing = [c for c in required_columns if c not in df.columns]
         if missing:
             raise ValueError(f"Missing required columns: {missing}")
-        progress.step("All 11 columns validated ✅")
+        progress.step("All 11 columns validated [OK]")
 
-        # STEP 3 — Remove duplicates
+        # STEP 3 - Remove duplicates
         before = len(df)
         df = df.drop_duplicates()
         dupes_removed = before - len(df)
         progress.step(f"Removed {dupes_removed:,} duplicate rows")
 
-        # STEP 4 — Drop missing target variables
+        # STEP 4 - Drop missing target variables
         before = len(df)
         df = df.dropna(subset=["Payment_Method"])
         dropped_payment = before - len(df)
-        progress.step(f"Dropped {dropped_payment:,} rows — missing Payment_Method")
+        progress.step(f"Dropped {dropped_payment:,} rows - missing Payment_Method")
 
         before = len(df)
         df = df.dropna(subset=["Customer_Age"])
         dropped_age = before - len(df)
-        progress.step(f"Dropped {dropped_age:,} rows — missing Customer_Age")
+        progress.step(f"Dropped {dropped_age:,} rows - missing Customer_Age")
 
-        # STEP 5 — Fill remaining nulls
+        # STEP 5 - Fill remaining nulls
         df["Store_Location"] = df["Store_Location"].fillna("Unknown")
         df["Customer_Gender"] = df["Customer_Gender"].fillna("Unknown")
-        progress.step("Filled missing Store_Location → Unknown")
-        progress.step("Filled missing Customer_Gender → Unknown")
+        progress.step("Filled missing Store_Location -> Unknown")
+        progress.step("Filled missing Customer_Gender -> Unknown")
 
         # Fill Price with median per Bike_Model
         df["Price"] = df.groupby("Bike_Model")["Price"].transform(
@@ -87,7 +87,7 @@ def load_and_clean_data(filepath: str) -> str:
         df["Price"] = df["Price"].fillna(df["Price"].median())
         progress.step("Imputed missing Price values with median per Bike_Model")
 
-        # STEP 6 — Standardize Gender
+        # STEP 6 - Standardize Gender
         gender_map = {
             "M": "Male", "male": "Male", "MALE": "Male", "m": "Male",
             "F": "Female", "female": "Female", "FEMALE": "Female", "f": "Female",
@@ -98,12 +98,12 @@ def load_and_clean_data(filepath: str) -> str:
         )
         progress.step("Standardized Customer_Gender values")
 
-        # STEP 7 — Standardize Bike Model
+        # STEP 7 - Standardize Bike Model
         df["Bike_Model"] = df["Bike_Model"].str.strip().str.title()
         df["Bike_Model"] = df["Bike_Model"].str.replace(r"\s+", " ", regex=True)
         progress.step("Standardized Bike_Model casing and whitespace")
 
-        # STEP 8 — Standardize Payment Method
+        # STEP 8 - Standardize Payment Method
         payment_map = {
             "cash": "Cash", "CASH": "Cash", "cash payment": "Cash"
         }
@@ -112,11 +112,11 @@ def load_and_clean_data(filepath: str) -> str:
         )
         progress.step("Standardized Payment_Method values")
 
-        # STEP 9 — Standardize Store Location
+        # STEP 9 - Standardize Store Location
         df["Store_Location"] = df["Store_Location"].str.strip()
         progress.step("Stripped whitespace from Store_Location")
 
-        # STEP 10 — Normalize dates
+        # STEP 10 - Normalize dates
         def parse_date(d):
             d = str(d).strip()
             for fmt in ["%d-%m-%Y", "%d/%m/%Y", "%d.%m.%Y", "%Y-%m-%d"]:
@@ -133,7 +133,7 @@ def load_and_clean_data(filepath: str) -> str:
             progress.step(f"Dropped {invalid_dates} rows with unparseable dates")
         progress.step("Normalized all date formats to DD-MM-YYYY")
 
-        # STEP 11 — Remove outliers and invalid values
+        # STEP 11 - Remove outliers and invalid values
         before = len(df)
         df = df[(df["Price"] >= 10) & (df["Price"] <= 50000)]
         progress.step(f"Removed {before - len(df):,} price outliers")
@@ -146,11 +146,11 @@ def load_and_clean_data(filepath: str) -> str:
         df = df[df["Quantity"] >= 1]
         progress.step(f"Removed {before - len(df):,} negative/zero quantities")
 
-        # STEP 12 — Save clean data
+        # STEP 12 - Save clean data
         df.to_csv("artifacts/clean_data.csv", index=False)
         final_rows = len(df)
-        progress.step(f"Saved artifacts/clean_data.csv → {final_rows:,} rows")
-        progress.agent_done("Agent 1 — Data Ingestion & Cleaning")
+        progress.step(f"Saved artifacts/clean_data.csv -> {final_rows:,} rows")
+        progress.agent_done("Agent 1 - Data Ingestion & Cleaning")
 
         summary = (
             f"CLEANING COMPLETE\n"
@@ -164,12 +164,12 @@ def load_and_clean_data(filepath: str) -> str:
         return summary
 
     except Exception as e:
-        progress.error("Agent 1 — Data Ingestion & Cleaning", str(e))
+        progress.error("Agent 1 - Data Ingestion & Cleaning", str(e))
         raise
 
 
 # ============================================================
-# TOOL 2 — Generate EDA Charts and HTML Report
+# TOOL 2 - Generate EDA Charts and HTML Report
 # ============================================================
 @tool("generate_eda_report")
 def generate_eda_report(filepath: str) -> str:
@@ -178,7 +178,7 @@ def generate_eda_report(filepath: str) -> str:
     in a self-contained eda_report.html file.
     """
     try:
-        progress.agent_start("Agent 2 — EDA & Visualizations")
+        progress.agent_start("Agent 2 - EDA & Visualizations")
         progress.step(f"Loading {filepath}...")
 
         df = pd.read_csv(filepath)
@@ -203,8 +203,8 @@ def generate_eda_report(filepath: str) -> str:
             plt.close(fig)
             return encoded
 
-        # Chart 1 — Sales by Store Location
-        progress.step("Generating chart 1 — Sales by Store Location...")
+        # Chart 1 - Sales by Store Location
+        progress.step("Generating chart 1 - Sales by Store Location...")
         fig, ax = plt.subplots(figsize=(10, 5))
         store_counts = df["Store_Location"].value_counts()
         sns.barplot(x=store_counts.index, y=store_counts.values, ax=ax)
@@ -214,8 +214,8 @@ def generate_eda_report(filepath: str) -> str:
         plt.xticks(rotation=45)
         charts["chart1"] = fig_to_base64(fig)
 
-        # Chart 2 — Sales by Month
-        progress.step("Generating chart 2 — Sales by Month...")
+        # Chart 2 - Sales by Month
+        progress.step("Generating chart 2 - Sales by Month...")
         fig, ax = plt.subplots(figsize=(10, 5))
         monthly = df.groupby("Month").size().reset_index(name="count")
         ax.plot(monthly["Month"], monthly["count"], marker="o", linewidth=2)
@@ -227,8 +227,8 @@ def generate_eda_report(filepath: str) -> str:
                             "Jul","Aug","Sep","Oct","Nov","Dec"])
         charts["chart2"] = fig_to_base64(fig)
 
-        # Chart 3 — Price by Bike Model
-        progress.step("Generating chart 3 — Price by Bike Model...")
+        # Chart 3 - Price by Bike Model
+        progress.step("Generating chart 3 - Price by Bike Model...")
         fig, ax = plt.subplots(figsize=(10, 5))
         bike_models = sorted(df["Bike_Model"].unique())
         data_to_plot = [df[df["Bike_Model"] == m]["Price"].values for m in bike_models]
@@ -239,8 +239,8 @@ def generate_eda_report(filepath: str) -> str:
         plt.xticks(rotation=45)
         charts["chart3"] = fig_to_base64(fig)
 
-        # Chart 4 — Age Distribution
-        progress.step("Generating chart 4 — Customer Age Distribution...")
+        # Chart 4 - Age Distribution
+        progress.step("Generating chart 4 - Customer Age Distribution...")
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.hist(df["Customer_Age"], bins=20, edgecolor="white", color="#4C72B0")
         ax.set_title("Customer Age Distribution", fontsize=14, fontweight="bold")
@@ -248,8 +248,8 @@ def generate_eda_report(filepath: str) -> str:
         ax.set_ylabel("Count")
         charts["chart4"] = fig_to_base64(fig)
 
-        # Chart 5 — Age Group Breakdown
-        progress.step("Generating chart 5 — Age Group Breakdown...")
+        # Chart 5 - Age Group Breakdown
+        progress.step("Generating chart 5 - Age Group Breakdown...")
         fig, ax = plt.subplots(figsize=(10, 5))
         age_counts = df["Age_Group"].value_counts().sort_index()
         sns.barplot(x=age_counts.index.astype(str), y=age_counts.values, ax=ax)
@@ -258,8 +258,8 @@ def generate_eda_report(filepath: str) -> str:
         ax.set_ylabel("Count")
         charts["chart5"] = fig_to_base64(fig)
 
-        # Chart 6 — Gender Distribution
-        progress.step("Generating chart 6 — Gender Distribution...")
+        # Chart 6 - Gender Distribution
+        progress.step("Generating chart 6 - Gender Distribution...")
         fig, ax = plt.subplots(figsize=(7, 7))
         gender_counts = df["Customer_Gender"].value_counts()
         ax.pie(gender_counts.values, labels=gender_counts.index,
@@ -267,8 +267,8 @@ def generate_eda_report(filepath: str) -> str:
         ax.set_title("Gender Distribution", fontsize=14, fontweight="bold")
         charts["chart6"] = fig_to_base64(fig)
 
-        # Chart 7 — Payment Method Distribution
-        progress.step("Generating chart 7 — Payment Method Distribution...")
+        # Chart 7 - Payment Method Distribution
+        progress.step("Generating chart 7 - Payment Method Distribution...")
         fig, ax = plt.subplots(figsize=(8, 8))
         pay_counts = df["Payment_Method"].value_counts()
         ax.pie(pay_counts.values, labels=pay_counts.index,
@@ -276,8 +276,8 @@ def generate_eda_report(filepath: str) -> str:
         ax.set_title("Payment Method Distribution", fontsize=14, fontweight="bold")
         charts["chart7"] = fig_to_base64(fig)
 
-        # Chart 8 — Cash Rate by Age Group
-        progress.step("Generating chart 8 — Cash Rate by Age Group...")
+        # Chart 8 - Cash Rate by Age Group
+        progress.step("Generating chart 8 - Cash Rate by Age Group...")
         df["Is_Cash"] = (df["Payment_Method"] == "Cash").astype(int)
         cash_rate = df.groupby("Age_Group", observed=True)["Is_Cash"].mean() * 100
         fig, ax = plt.subplots(figsize=(10, 5))
@@ -287,8 +287,8 @@ def generate_eda_report(filepath: str) -> str:
         ax.set_ylabel("Cash Payment Rate (%)")
         charts["chart8"] = fig_to_base64(fig)
 
-        # Chart 9 — Payment Method by Age Group
-        progress.step("Generating chart 9 — Payment Method by Age Group...")
+        # Chart 9 - Payment Method by Age Group
+        progress.step("Generating chart 9 - Payment Method by Age Group...")
         pay_age = df.groupby(
             ["Age_Group", "Payment_Method"], observed=True
         ).size().unstack(fill_value=0)
@@ -301,8 +301,8 @@ def generate_eda_report(filepath: str) -> str:
         plt.legend(title="Payment Method", bbox_to_anchor=(1.05, 1))
         charts["chart9"] = fig_to_base64(fig)
 
-        # Chart 10 — Quantity Distribution
-        progress.step("Generating chart 10 — Quantity Distribution...")
+        # Chart 10 - Quantity Distribution
+        progress.step("Generating chart 10 - Quantity Distribution...")
         fig, ax = plt.subplots(figsize=(8, 5))
         qty_counts = df["Quantity"].value_counts().sort_index()
         sns.barplot(x=qty_counts.index, y=qty_counts.values, ax=ax)
@@ -311,8 +311,8 @@ def generate_eda_report(filepath: str) -> str:
         ax.set_ylabel("Number of Transactions")
         charts["chart10"] = fig_to_base64(fig)
 
-        # Chart 11 — Bike Model by Age Group Heatmap
-        progress.step("Generating chart 11 — Bike Model by Age Group heatmap...")
+        # Chart 11 - Bike Model by Age Group Heatmap
+        progress.step("Generating chart 11 - Bike Model by Age Group heatmap...")
         heatmap_data = df.groupby(
             ["Age_Group", "Bike_Model"], observed=True
         ).size().unstack(fill_value=0)
@@ -323,8 +323,8 @@ def generate_eda_report(filepath: str) -> str:
         ax.set_ylabel("Age Group")
         charts["chart11"] = fig_to_base64(fig)
 
-        # Chart 12 — Bike Model Distribution
-        progress.step("Generating chart 12 — Bike Model Distribution...")
+        # Chart 12 - Bike Model Distribution
+        progress.step("Generating chart 12 - Bike Model Distribution...")
         fig, ax = plt.subplots(figsize=(10, 5))
         model_counts = df["Bike_Model"].value_counts()
         sns.barplot(x=model_counts.values, y=model_counts.index, ax=ax,
@@ -348,7 +348,7 @@ def generate_eda_report(filepath: str) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bike Sales — EDA Report</title>
+    <title>Bike Sales - EDA Report</title>
     <style>
         body {{ font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; color: #333; }}
         h1 {{ color: #1F4E79; border-bottom: 3px solid #2E75B6; padding-bottom: 10px; }}
@@ -365,11 +365,11 @@ def generate_eda_report(filepath: str) -> str:
     </style>
 </head>
 <body>
-    <h1>🚲 Bike Sales — Exploratory Data Analysis</h1>
-    <p><strong>Author:</strong> Rachel Barazani — AI Developer |
-       <strong>Course:</strong> AI Developer Program — Hebrew University 2026</p>
+    <h1>Bike Sales - Exploratory Data Analysis</h1>
+    <p><strong>Author:</strong> Rachel Barazani - AI Developer |
+       <strong>Course:</strong> AI Developer Program - Hebrew University 2026</p>
 
-    <h2>📊 Dataset Summary</h2>
+    <h2>Dataset Summary</h2>
     <div class="summary">
         <div class="card"><h3>{total_rows:,}</h3><p>Total Transactions</p></div>
         <div class="card"><h3>{stores}</h3><p>Store Locations</p></div>
@@ -378,29 +378,29 @@ def generate_eda_report(filepath: str) -> str:
         <div class="card"><h3>{date_max}</h3><p>Date Range End</p></div>
     </div>
 
-    <h2>🏪 Sales Performance</h2>
+    <h2>Sales Performance</h2>
     <div class="chart"><img src="data:image/png;base64,{charts['chart1']}" alt="Sales by Store"/></div>
     <div class="chart"><img src="data:image/png;base64,{charts['chart2']}" alt="Sales by Month"/></div>
     <div class="chart"><img src="data:image/png;base64,{charts['chart3']}" alt="Price by Model"/></div>
 
-    <h2>👥 Customer Profile</h2>
+    <h2>Customer Profile</h2>
     <div class="chart"><img src="data:image/png;base64,{charts['chart4']}" alt="Age Distribution"/></div>
     <div class="chart"><img src="data:image/png;base64,{charts['chart5']}" alt="Age Groups"/></div>
     <div class="chart"><img src="data:image/png;base64,{charts['chart6']}" alt="Gender"/></div>
 
-    <h2>💳 Payment Analysis</h2>
+    <h2>Payment Analysis</h2>
     <div class="chart"><img src="data:image/png;base64,{charts['chart7']}" alt="Payment Methods"/></div>
     <div class="chart"><img src="data:image/png;base64,{charts['chart8']}" alt="Cash Rate by Age"/></div>
     <div class="chart"><img src="data:image/png;base64,{charts['chart9']}" alt="Payment by Age Group"/></div>
 
-    <h2>🎯 Prediction Targets</h2>
+    <h2>Prediction Targets</h2>
     <div class="chart"><img src="data:image/png;base64,{charts['chart10']}" alt="Quantity Distribution"/></div>
     <div class="chart"><img src="data:image/png;base64,{charts['chart11']}" alt="Bike Model Heatmap"/></div>
     <div class="chart"><img src="data:image/png;base64,{charts['chart12']}" alt="Bike Model Distribution"/></div>
 
     <div class="footer">
-        <p>Generated by Bike Sales AI Pipeline — Hebrew University 2026 Final Project — CrewAI</p>
-        <p>Rachel Barazani — AI Developer | Hebrew University 2026</p>
+        <p>Generated by Bike Sales AI Pipeline - Hebrew University 2026 Final Project - CrewAI</p>
+        <p>Rachel Barazani - AI Developer | Hebrew University 2026</p>
     </div>
 </body>
 </html>"""
@@ -409,17 +409,17 @@ def generate_eda_report(filepath: str) -> str:
             f.write(html)
 
         progress.step("Saved artifacts/eda_report.html")
-        progress.agent_done("Agent 2 — EDA & Visualizations")
+        progress.agent_done("Agent 2 - EDA & Visualizations")
 
-        return "EDA report generated with 12 charts — saved to artifacts/eda_report.html"
+        return "EDA report generated with 12 charts - saved to artifacts/eda_report.html"
 
     except Exception as e:
-        progress.error("Agent 2 — EDA & Visualizations", str(e))
+        progress.error("Agent 2 - EDA & Visualizations", str(e))
         raise
 
 
 # ============================================================
-# TOOL 3 — Generate Business Insights and Dataset Contract
+# TOOL 3 - Generate Business Insights and Dataset Contract
 # ============================================================
 @tool("generate_insights_and_contract")
 def generate_insights_and_contract(filepath: str) -> str:
@@ -428,7 +428,7 @@ def generate_insights_and_contract(filepath: str) -> str:
     and dataset_contract.json in the artifacts folder.
     """
     try:
-        progress.agent_start("Agent 3 — Business Insights & Contract")
+        progress.agent_start("Agent 3 - Business Insights & Contract")
         progress.step(f"Loading {filepath}...")
 
         df = pd.read_csv(filepath)
@@ -460,17 +460,17 @@ def generate_insights_and_contract(filepath: str) -> str:
 
         # Write insights.md
         progress.step("Writing insights.md...")
-        insights = f"""# 🚲 Bike Sales — Business Insights
+        insights = f"""# Bike Sales - Business Insights
 
-**Author:** Rachel Barazani — AI Developer  
-**Course:** AI Developer Program — Hebrew University 2026  
-**Generated by:** Crew 1 — Agent 3 (Business Insights Specialist)
+**Author:** Rachel Barazani - AI Developer  
+**Course:** AI Developer Program - Hebrew University 2026  
+**Generated by:** Crew 1 - Agent 3 (Business Insights Specialist)
 
 ---
 
 ## Dataset Summary
 - **Total transactions:** {len(df):,}
-- **Date range:** {df["Date_parsed"].min().strftime("%B %Y")} → {df["Date_parsed"].max().strftime("%B %Y")}
+- **Date range:** {df["Date_parsed"].min().strftime("%B %Y")} -> {df["Date_parsed"].max().strftime("%B %Y")}
 - **Store locations:** {df["Store_Location"].nunique()}
 - **Bike models:** {df["Bike_Model"].nunique()}
 
@@ -496,27 +496,27 @@ def generate_insights_and_contract(filepath: str) -> str:
 
 ## Payment Barrier Observation
 
-**{cash_rate}% of all transactions are paid in cash** — making cash the
+**{cash_rate}% of all transactions are paid in cash** - making cash the
 most common single payment method in the dataset. Ages **{low_freq_ages[0]}**
 and **{low_freq_ages[1]}** show the lowest overall transaction frequency,
-and also show the highest cash reliance — suggesting a potential
+and also show the highest cash reliance - suggesting a potential
 **payment access barrier** rather than lack of interest in bike purchases.
 
 ### Universal Cash Discount Recommendation
 
-> **The recommended cash discount is offered to ALL customers equally —
+> **The recommended cash discount is offered to ALL customers equally -
 > regardless of age, gender, store location, or any personal characteristic.
 > This is a store-wide pricing strategy, not a targeted promotion.**
 
-The AI model identifies *who is likely to pay cash* — it does not determine
+The AI model identifies *who is likely to pay cash* - it does not determine
 who qualifies for the discount. Every customer who walks through the door
 is eligible, full stop.
 
 **The business case has four parts:**
 
 **1. Attract new customers currently blocked by payment barriers**
-Ages 18–24 and 65+ show the highest cash reliance in our data. A visible
-cash discount signals to these groups that the store welcomes them —
+Ages 18-24 and 65+ show the highest cash reliance in our data. A visible
+cash discount signals to these groups that the store welcomes them -
 removing the silent barrier that digital-only pricing creates.
 
 **2. Reward existing cash-paying customers**
@@ -525,18 +525,18 @@ their loyalty and deepens retention at no cost to acquisition.
 
 **3. Incentivise existing customers to switch to cash**
 A cash discount gives every digital-payment customer a positive reason
-to consider paying cash. That {cash_rate}% figure has room to grow —
+to consider paying cash. That {cash_rate}% figure has room to grow -
 and the store benefits every time it does.
 
 **4. The discount can be self-funding**
-Credit and debit card processing fees typically run 1.5–3.5% per
+Credit and debit card processing fees typically run 1.5-3.5% per
 transaction. A 2% cash discount costs less than the fees it replaces
-on converted transactions — making the promotion financially sustainable.
+on converted transactions - making the promotion financially sustainable.
 
 **In summary:** This is not a demographic strategy. It is a universal
 pricing tool that removes a payment barrier, rewards loyal customers,
 incentivises cash adoption, and can pay for itself through fee savings.
-The prediction model makes it operationally actionable — staff can
+The prediction model makes it operationally actionable - staff can
 proactively offer the discount at point of sale.
 
 ---
@@ -562,7 +562,7 @@ proactively offer the discount at point of sale.
         progress.step("Writing dataset_contract.json...")
         contract = {
             "contract_version": "1.0",
-            "created_by": "Crew 1 — Agent 3",
+            "created_by": "Crew 1 - Agent 3",
             "dataset": "Bike Sales Clean Data",
             "total_rows": len(df),
             "total_columns": 11,
@@ -588,7 +588,7 @@ proactively offer the discount at point of sale.
                     "type": "string",
                     "nullable": False,
                     "allowed_values": sorted(df["Bike_Model"].unique().tolist()),
-                    "description": "Type of bike sold — Prediction 2 target"
+                    "description": "Type of bike sold - Prediction 2 target"
                 },
                 "Price": {
                     "type": "float",
@@ -603,7 +603,7 @@ proactively offer the discount at point of sale.
                     "min": int(df["Quantity"].min()),
                     "max": int(df["Quantity"].max()),
                     "allowed_values": sorted(df["Quantity"].unique().tolist()),
-                    "description": "Number of bikes purchased — Prediction 1 target"
+                    "description": "Number of bikes purchased - Prediction 1 target"
                 },
                 "Store_Location": {
                     "type": "string",
@@ -622,14 +622,14 @@ proactively offer the discount at point of sale.
                     "type": "string",
                     "nullable": False,
                     "allowed_values": sorted(df["Payment_Method"].unique().tolist()),
-                    "description": "Payment method — Prediction 3 source"
+                    "description": "Payment method - Prediction 3 source"
                 },
                 "Customer_Age": {
                     "type": "integer",
                     "nullable": False,
                     "min": int(df["Customer_Age"].min()),
                     "max": int(df["Customer_Age"].max()),
-                    "description": "Customer age — critical for Prediction 3"
+                    "description": "Customer age - critical for Prediction 3"
                 },
                 "Customer_Gender": {
                     "type": "string",
@@ -680,7 +680,7 @@ proactively offer the discount at point of sale.
         with open("artifacts/dataset_contract.json", "w", encoding="utf-8") as f:
             json.dump(contract, f, indent=2)
         progress.step("Saved artifacts/dataset_contract.json")
-        progress.agent_done("Agent 3 — Business Insights & Contract")
+        progress.agent_done("Agent 3 - Business Insights & Contract")
 
         return (
             "Crew 1 complete.\n"
@@ -689,5 +689,5 @@ proactively offer the discount at point of sale.
         )
 
     except Exception as e:
-        progress.error("Agent 3 — Business Insights & Contract", str(e))
+        progress.error("Agent 3 - Business Insights & Contract", str(e))
         raise

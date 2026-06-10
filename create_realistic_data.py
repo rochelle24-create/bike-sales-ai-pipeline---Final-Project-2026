@@ -1,7 +1,7 @@
 # create_realistic_data.py
 # Inject realistic correlations then dirty the dataset
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 import pandas as pd
 import numpy as np
@@ -16,7 +16,7 @@ df = pd.read_csv("data/bike_sales_100k.csv")
 print(f"Loaded {len(df):,} rows")
 
 # ============================================================
-# STEP 1 — INJECT REALISTIC CORRELATIONS
+# STEP 1 - INJECT REALISTIC CORRELATIONS
 # ============================================================
 print("\nInjecting realistic correlations...")
 
@@ -133,7 +133,7 @@ def assign_quantity(row):
         elif r < 0.80: return 4
         else: return 5
 
-    # Mid-age buying expensive or electric bikes — solo purchase
+    # Mid-age buying expensive or electric bikes - solo purchase
     if 35 <= age <= 54:
         if r < 0.35: return 1
         elif r < 0.60: return 2
@@ -291,7 +291,7 @@ df["Date"] = df.apply(assign_date, axis=1)
 print("  Dates assigned with realistic seasonal distribution")
 
 # ============================================================
-# STEP 2 — INJECT REALISTIC DIRT
+# STEP 2 - INJECT REALISTIC DIRT
 # ============================================================
 print("\nInjecting data quality issues...")
 dirty = df.copy()
@@ -368,11 +368,11 @@ idx = np.random.choice(dirty.index, size=80, replace=False)
 dirty.loc[idx, "Quantity"] = -1
 
 # ============================================================
-# STEP 3 — SAVE
+# STEP 3 - SAVE
 # ============================================================
 dirty.to_csv("data/bike_sales_dirty.csv", index=False)
 
-print(f"\n✅ Done!")
+print(f"\n[OK] Done!")
 print(f"Total rows: {len(dirty):,}")
 print(f"Saved to: data/bike_sales_dirty.csv")
 print(f"\nDirt injected:")

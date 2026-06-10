@@ -1,7 +1,7 @@
 # flow/pipeline.py
-# CrewAI Flow — Main Pipeline Orchestrator
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# CrewAI Flow - Main Pipeline Orchestrator
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 import os
 import sys
@@ -32,7 +32,7 @@ from crew2_datascientists.tools import (
 
 
 def validate_crew1_outputs():
-    """Validation Checkpoint 1 — Between Crew 1 and Crew 2."""
+    """Validation Checkpoint 1 - Between Crew 1 and Crew 2."""
     progress.validation_header()
 
     progress.validation_check(
@@ -78,7 +78,7 @@ def validate_crew1_outputs():
 
 
 def validate_crew2_inputs():
-    """Validation Checkpoint 2 — Before Model Training."""
+    """Validation Checkpoint 2 - Before Model Training."""
     progress.validation_header()
 
     progress.validation_check(
@@ -111,13 +111,13 @@ def validate_crew2_inputs():
 
 
 class BikeSalesPipeline(Flow):
-    """Orchestrates Crew 1 → Validation → Crew 2."""
+    """Orchestrates Crew 1 -> Validation -> Crew 2."""
 
     @start()
     def run_crew1(self):
-        """Run Crew 1 — Data Analyst tools directly."""
+        """Run Crew 1 - Data Analyst tools directly."""
         crew1_start = time.time()
-        progress.crew_header("CREW 1 — DATA ANALYST CREW")
+        progress.crew_header("CREW 1 - DATA ANALYST CREW")
 
         result1 = load_and_clean_data.run("data/bike_sales_dirty.csv")
         progress.step(result1)
@@ -147,9 +147,9 @@ class BikeSalesPipeline(Flow):
 
     @listen(validate_and_handoff)
     def run_crew2(self, validation_result):
-        """Run Crew 2 — Data Scientist tools directly."""
+        """Run Crew 2 - Data Scientist tools directly."""
         crew2_start = time.time()
-        progress.crew_header("CREW 2 — DATA SCIENTIST CREW")
+        progress.crew_header("CREW 2 - DATA SCIENTIST CREW")
 
         result4 = engineer_features.run("artifacts/clean_data.csv")
         progress.step(result4)
@@ -182,7 +182,7 @@ class BikeSalesPipeline(Flow):
 
 
 def main():
-    """Main entry point — run the full pipeline."""
+    """Main entry point - run the full pipeline."""
     try:
         llm = get_llm()
         os.environ["SELECTED_BACKEND"] = (
@@ -193,9 +193,9 @@ def main():
         progress.pipeline_start_msg(os.environ.get("SELECTED_BACKEND", "Unknown"))
         BikeSalesPipeline().kickoff()
     except KeyboardInterrupt:
-        print("\n\n⚠️  Pipeline interrupted by user.")
+        print("\n\n[!]  Pipeline interrupted by user.")
     except Exception as e:
-        print(f"\n\n❌ Pipeline failed: {e}")
+        print(f"\n\n[X] Pipeline failed: {e}")
         raise
 
 

@@ -1,7 +1,7 @@
 # app/streamlit_app.py
-# Bike Sales AI Pipeline — Hebrew University 2026 Final Project — Streamlit Web App
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# Bike Sales AI Pipeline - Hebrew University 2026 Final Project - Streamlit Web App
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 import os
 import sys
@@ -26,8 +26,8 @@ from utils.references import CASH_PAYMENT_CITATIONS
 # PAGE CONFIG
 # ============================================================
 st.set_page_config(
-    page_title="Bike Sales AI Pipeline — Hebrew University 2026 Final Project",
-    page_icon="🚲",
+    page_title="Bike Sales AI Pipeline - Hebrew University 2026 Final Project",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -91,12 +91,12 @@ def read_markdown(path):
 # SIDEBAR
 # ============================================================
 with st.sidebar:
-    st.title("🚲 Bike Sales AI")
+    st.title("Bike Sales AI")
     st.markdown("**Rachel Barazani**  \nAI Developer")
     st.markdown("Hebrew University 2026")
     st.divider()
 
-    st.markdown("### 📁 Pipeline Status")
+    st.markdown("### Pipeline Status")
     artifacts = {
         "clean_data.csv":           "artifacts/clean_data.csv",
         "eda_report.html":          "artifacts/eda_report.html",
@@ -108,19 +108,19 @@ with st.sidebar:
         "model_card.md":            "artifacts/model_card.md",
     }
     for name, path in artifacts.items():
-        icon = "✅" if artifact_exists(path) else "⏳"
+        icon = "[OK]" if artifact_exists(path) else ""
         st.markdown(f"{icon} `{name}`")
 
     st.divider()
     df = load_clean_data()
     if df is not None:
-        st.markdown("### 📊 Dataset")
+        st.markdown("### Dataset")
         st.markdown(f"**Rows:** {len(df):,}")
         st.markdown(f"**Stores:** {df['Store_Location'].nunique()}")
         st.markdown(f"**Bike Models:** {df['Bike_Model'].nunique()}")
 
     st.divider()
-    st.markdown("### ▶️ Run Pipeline")
+    st.markdown("### >Run Pipeline")
     st.code("python flow/pipeline.py", language="bash")
 
 # ============================================================
@@ -129,25 +129,25 @@ with st.sidebar:
 page = st.selectbox(
     "Navigate",
     [
-        "🏠 Business Overview",
-        "📦 Prediction 1: Quantity",
-        "🚲 Prediction 2: Bike Model",
-        "💳 Prediction 3: Cash Payment",
-        "📋 Model Documentation"
+        "Business Overview",
+        "Prediction 1: Quantity",
+        "Prediction 2: Bike Model",
+        "Prediction 3: Cash Payment",
+        "Model Documentation"
     ]
 )
 
 # ============================================================
-# PAGE 1 — BUSINESS OVERVIEW
+# PAGE 1 - BUSINESS OVERVIEW
 # ============================================================
-if page == "🏠 Business Overview":
-    st.title("🚲 Bike Sales AI Pipeline — Hebrew University 2026 Final Project")
-    st.markdown("**Author:** Rachel Barazani — AI Developer | **Course:** AI Developer Program — Hebrew University 2026")
+if page == "Business Overview":
+    st.title("Bike Sales AI Pipeline - Hebrew University 2026 Final Project")
+    st.markdown("**Author:** Rachel Barazani - AI Developer | **Course:** AI Developer Program - Hebrew University 2026")
     st.divider()
 
     df = load_clean_data()
     if df is None:
-        st.warning("⏳ Pipeline has not been run yet. Run `python flow/pipeline.py` first.")
+        st.warning("Pipeline has not been run yet. Run `python flow/pipeline.py` first.")
         st.stop()
 
     # Metric cards
@@ -161,7 +161,7 @@ if page == "🏠 Business Overview":
     st.divider()
 
     # EDA Report
-    st.subheader("📊 Exploratory Data Analysis")
+    st.subheader("Exploratory Data Analysis")
     if artifact_exists("artifacts/eda_report.html"):
         with open("artifacts/eda_report.html", "r", encoding="utf-8") as f:
             html_content = f.read()
@@ -172,7 +172,7 @@ if page == "🏠 Business Overview":
     st.divider()
 
     # Business Insights
-    st.subheader("💡 Business Insights")
+    st.subheader("Business Insights")
     insights = read_markdown("artifacts/insights.md")
     if insights:
         st.markdown(insights)
@@ -181,10 +181,10 @@ if page == "🏠 Business Overview":
 
 
 # ============================================================
-# PAGE 2 — PREDICTION 1: QUANTITY
+# PAGE 2 - PREDICTION 1: QUANTITY
 # ============================================================
-elif page == "📦 Prediction 1: Quantity":
-    st.title("📦 Prediction 1 — Purchase Quantity")
+elif page == "Prediction 1: Quantity":
+    st.title("Prediction 1 - Purchase Quantity")
     st.markdown("*How many bikes will this customer buy?*")
     st.divider()
 
@@ -192,13 +192,13 @@ elif page == "📦 Prediction 1: Quantity":
     encoders = load_encoders()
 
     if df is None or encoders is None:
-        st.warning("⏳ Run the pipeline first.")
+        st.warning("Run the pipeline first.")
         st.stop()
 
     col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.subheader("🎯 Try It Live")
+        st.subheader("Try It Live")
         age = st.slider("Customer Age", 18, 70, 35)
         gender = st.selectbox("Customer Gender", ["Male", "Female", "Unknown"])
         bike_model = st.selectbox("Bike Model", sorted(df["Bike_Model"].unique()))
@@ -208,7 +208,7 @@ elif page == "📦 Prediction 1: Quantity":
                                sorted(df["Payment_Method"].unique()))
         season = st.selectbox("Season", ["Winter", "Spring", "Summer", "Fall"])
 
-        if st.button("🔮 Predict Quantity", type="primary"):
+        if st.button("Predict Quantity", type="primary"):
             try:
                 price_tier = "Budget" if price < 500 else "Mid" if price <= 2000 else "Premium"
                 age_group = (
@@ -242,7 +242,7 @@ elif page == "📦 Prediction 1: Quantity":
                     pred = rf_model.predict(X)[0]
                     proba = rf_model.predict_proba(X)[0]
 
-                    st.success(f"🛒 Predicted Quantity: **{pred} bike(s)**")
+                    st.success(f"Predicted Quantity: **{pred} bike(s)**")
 
                     st.markdown("**Probability by Quantity:**")
                     classes = rf_model.classes_
@@ -256,7 +256,7 @@ elif page == "📦 Prediction 1: Quantity":
                 st.error(f"Prediction error: {e}")
 
     with col2:
-        st.subheader("📊 Model Comparison")
+        st.subheader("Model Comparison")
 
         if artifact_exists("artifacts/models/accuracy_quantity.png"):
             st.image("artifacts/models/accuracy_quantity.png",
@@ -265,11 +265,11 @@ elif page == "📦 Prediction 1: Quantity":
             st.image("artifacts/models/f1_quantity.png",
                     caption="F1 Score: LR vs RF")
 
-        st.subheader("🔍 Feature Importance")
+        st.subheader("Feature Importance")
         if artifact_exists("artifacts/models/feature_importance_quantity.png"):
             st.image("artifacts/models/feature_importance_quantity.png")
 
-        st.subheader("📉 Confusion Matrices")
+        st.subheader("Confusion Matrices")
         c1, c2 = st.columns(2)
         with c1:
             if artifact_exists("artifacts/models/cm_lr_quantity.png"):
@@ -282,10 +282,10 @@ elif page == "📦 Prediction 1: Quantity":
 
 
 # ============================================================
-# PAGE 3 — PREDICTION 2: BIKE MODEL
+# PAGE 3 - PREDICTION 2: BIKE MODEL
 # ============================================================
-elif page == "🚲 Prediction 2: Bike Model":
-    st.title("🚲 Prediction 2 — Bike Model Recommendation")
+elif page == "Prediction 2: Bike Model":
+    st.title("Prediction 2 - Bike Model Recommendation")
     st.markdown("*Which bike should we recommend to this customer?*")
     st.divider()
 
@@ -293,13 +293,13 @@ elif page == "🚲 Prediction 2: Bike Model":
     encoders = load_encoders()
 
     if df is None or encoders is None:
-        st.warning("⏳ Run the pipeline first.")
+        st.warning("Run the pipeline first.")
         st.stop()
 
     col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.subheader("🎯 Try It Live")
+        st.subheader("Try It Live")
         age = st.slider("Customer Age", 18, 70, 35, key="age2")
         gender = st.selectbox("Customer Gender",
                               ["Male", "Female", "Unknown"], key="gender2")
@@ -312,7 +312,7 @@ elif page == "🚲 Prediction 2: Bike Model":
         season = st.selectbox("Season",
                               ["Winter", "Spring", "Summer", "Fall"], key="season2")
 
-        if st.button("🚲 Recommend Bike", type="primary"):
+        if st.button("Recommend Bike", type="primary"):
             try:
                 price_tier = "Budget" if price < 500 else "Mid" if price <= 2000 else "Premium"
                 age_group = (
@@ -353,7 +353,7 @@ elif page == "🚲 Prediction 2: Bike Model":
                         rf_model.classes_
                     )
 
-                    st.success(f"🚲 Recommended Bike: **{pred_label}**")
+                    st.success(f"Recommended Bike: **{pred_label}**")
 
                     st.markdown("**Probability by Bike Model:**")
                     prob_df = pd.DataFrame({
@@ -366,7 +366,7 @@ elif page == "🚲 Prediction 2: Bike Model":
                 st.error(f"Prediction error: {e}")
 
     with col2:
-        st.subheader("📊 Model Comparison")
+        st.subheader("Model Comparison")
         if artifact_exists("artifacts/models/accuracy_bike_model.png"):
             st.image("artifacts/models/accuracy_bike_model.png",
                     caption="Accuracy: LR vs RF")
@@ -374,11 +374,11 @@ elif page == "🚲 Prediction 2: Bike Model":
             st.image("artifacts/models/f1_bike_model.png",
                     caption="F1 Score: LR vs RF")
 
-        st.subheader("🔍 Feature Importance")
+        st.subheader("Feature Importance")
         if artifact_exists("artifacts/models/feature_importance_bike_model.png"):
             st.image("artifacts/models/feature_importance_bike_model.png")
 
-        st.subheader("📉 Confusion Matrices")
+        st.subheader("Confusion Matrices")
         c1, c2 = st.columns(2)
         with c1:
             if artifact_exists("artifacts/models/cm_lr_bike_model.png"):
@@ -391,10 +391,10 @@ elif page == "🚲 Prediction 2: Bike Model":
 
 
 # ============================================================
-# PAGE 4 — PREDICTION 3: CASH PAYMENT
+# PAGE 4 - PREDICTION 3: CASH PAYMENT
 # ============================================================
-elif page == "💳 Prediction 3: Cash Payment":
-    st.title("💳 Prediction 3 — Cash Payment Intelligence")
+elif page == "Prediction 3: Cash Payment":
+    st.title("Prediction 3 - Cash Payment Intelligence")
     st.markdown("*Would a universal cash discount attract new customers?*")
     st.divider()
 
@@ -403,11 +403,11 @@ elif page == "💳 Prediction 3: Cash Payment":
     clean_df = load_clean_data()
 
     if df is None or encoders is None:
-        st.warning("⏳ Run the pipeline first.")
+        st.warning("Run the pipeline first.")
         st.stop()
 
-    # Section 1 — Purchase frequency by age group
-    st.subheader("📊 Purchase Frequency by Age Group")
+    # Section 1 - Purchase frequency by age group
+    st.subheader("Purchase Frequency by Age Group")
     clean_df["Age_Group"] = pd.cut(
         clean_df["Customer_Age"],
         bins=[17, 24, 34, 44, 54, 64, 100],
@@ -423,8 +423,8 @@ elif page == "💳 Prediction 3: Cash Payment":
     st.pyplot(fig)
     plt.close()
 
-    # Section 2 — Cash rate by age group
-    st.subheader("💵 Cash Payment Rate by Age Group")
+    # Section 2 - Cash rate by age group
+    st.subheader("Cash Payment Rate by Age Group")
     clean_df["Is_Cash"] = (clean_df["Payment_Method"] == "Cash").astype(int)
     cash_rate = clean_df.groupby(
         "Age_Group", observed=True
@@ -440,11 +440,11 @@ elif page == "💳 Prediction 3: Cash Payment":
 
     st.divider()
 
-    # Section 3 — Live prediction
+    # Section 3 - Live prediction
     col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.subheader("🎯 Cash Payment Probability")
+        st.subheader("Cash Payment Probability")
         age = st.slider("Customer Age", 18, 70, 35, key="age3")
         gender = st.selectbox("Customer Gender",
                               ["Male", "Female", "Unknown"], key="gender3")
@@ -457,7 +457,7 @@ elif page == "💳 Prediction 3: Cash Payment":
                               ["Winter", "Spring", "Summer", "Fall"],
                               key="season3")
 
-        if st.button("💳 Predict Cash Probability", type="primary"):
+        if st.button("Predict Cash Probability", type="primary"):
             try:
                 price_tier = "Budget" if price < 500 else \
                              "Mid" if price <= 2000 else "Premium"
@@ -499,11 +499,11 @@ elif page == "💳 Prediction 3: Cash Payment":
 
                     if cash_prob >= 50:
                         st.success(
-                            f"💵 **{cash_prob:.1f}%** probability of cash payment"
+                            f"**{cash_prob:.1f}%** probability of cash payment"
                         )
                     else:
                         st.info(
-                            f"💳 **{cash_prob:.1f}%** probability of cash payment"
+                            f"**{cash_prob:.1f}%** probability of cash payment"
                         )
 
                     # Gauge
@@ -527,7 +527,7 @@ elif page == "💳 Prediction 3: Cash Payment":
                 st.error(f"Prediction error: {e}")
 
     with col2:
-        st.subheader("📊 Model Comparison")
+        st.subheader("Model Comparison")
         if artifact_exists("artifacts/models/accuracy_payment.png"):
             st.image("artifacts/models/accuracy_payment.png",
                     caption="Accuracy: LR vs RF")
@@ -537,8 +537,8 @@ elif page == "💳 Prediction 3: Cash Payment":
 
     st.divider()
 
-    # Section 4 — Business Recommendation
-    st.subheader("💡 Universal Cash Discount Recommendation")
+    # Section 4 - Business Recommendation
+    st.subheader("Universal Cash Discount Recommendation")
 
     total = len(clean_df)
     cash_total = clean_df["Is_Cash"].sum()
@@ -549,28 +549,28 @@ elif page == "💳 Prediction 3: Cash Payment":
     <div style="background:#f0f7ff; padding:24px; border-radius:12px;
                 border-left:4px solid #2E75B6;">
 
-    <h4>📊 Cash Payment Analysis</h4>
+    <h4>Cash Payment Analysis</h4>
 
     <p><strong>Current cash transaction rate:</strong>
        {cash_pct}% of all sales ({cash_total:,} / {total:,})</p>
 
     <p><strong>Underrepresented age groups:</strong><br>
-    → Ages <strong>{low_freq[0]}</strong>: lowest purchase frequency<br>
-    → Ages <strong>{low_freq[1]}</strong>: second lowest frequency</p>
+    -> Ages <strong>{low_freq[0]}</strong>: lowest purchase frequency<br>
+    -> Ages <strong>{low_freq[1]}</strong>: second lowest frequency</p>
 
-    <h4>💡 Recommendation</h4>
-    <p>A <strong>universal cash discount</strong> — available equally to
-    <strong>ALL customers</strong> — removes the payment barrier for
+    <h4>Recommendation</h4>
+    <p>A <strong>universal cash discount</strong> - available equally to
+    <strong>ALL customers</strong> - removes the payment barrier for
     customers who may not have access to credit cards, financing,
     or digital payment methods.</p>
 
     <p><strong>Expected segments most likely to respond:</strong><br>
-    → Ages 18–24: limited credit history<br>
-    → Ages 65+: may prefer or rely on cash transactions</p>
+    -> Ages 18-24: limited credit history<br>
+    -> Ages 65+: may prefer or rely on cash transactions</p>
 
-    <h4>⚠️ Important</h4>
+    <h4>[!] Important</h4>
     <p>This discount applies <strong>universally to all customers</strong>.
-    The analysis identifies who benefits most — it does <strong>not</strong>
+    The analysis identifies who benefits most - it does <strong>not</strong>
     determine who qualifies. No customer is excluded or targeted based on
     age, gender, or any personal characteristic.</p>
 
@@ -581,17 +581,17 @@ elif page == "💳 Prediction 3: Cash Payment":
 
 
 # ============================================================
-# PAGE 5 — MODEL DOCUMENTATION
+# PAGE 5 - MODEL DOCUMENTATION
 # ============================================================
-elif page == "📋 Model Documentation":
-    st.title("📋 Model Documentation")
+elif page == "Model Documentation":
+    st.title("Model Documentation")
     st.divider()
 
     tab1, tab2, tab3, tab4 = st.tabs([
-        "📄 Model Card",
-        "📊 Evaluation Report",
-        "🔒 Dataset Contract",
-        "⬇️ Downloads"
+        "Model Card",
+        "Evaluation Report",
+        "Dataset Contract",
+        "Downloads"
     ])
 
     with tab1:
@@ -617,7 +617,7 @@ elif page == "📋 Model Documentation":
             st.warning("Dataset contract not found. Run the pipeline first.")
 
     with tab4:
-        st.subheader("⬇️ Download Artifacts")
+        st.subheader("Download Artifacts")
         downloads = {
             "clean_data.csv":       "artifacts/clean_data.csv",
             "features.csv":         "artifacts/features.csv",
@@ -630,10 +630,10 @@ elif page == "📋 Model Documentation":
             if artifact_exists(path):
                 with open(path, "rb") as f:
                     st.download_button(
-                        label=f"⬇️ {name}",
+                        label=f"{name}",
                         data=f,
                         file_name=name,
                         mime="application/octet-stream"
                     )
             else:
-                st.markdown(f"⏳ `{name}` — not generated yet")
+                st.markdown(f"`{name}` - not generated yet")

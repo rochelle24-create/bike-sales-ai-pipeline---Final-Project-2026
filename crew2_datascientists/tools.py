@@ -1,7 +1,7 @@
 # crew2_datascientists/tools.py
-# Crew 2 — Data Scientist Crew — Custom Tools
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# Crew 2 - Data Scientist Crew - Custom Tools
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 import os
 import json
@@ -33,7 +33,7 @@ sns.set_style("whitegrid")
 
 
 # ============================================================
-# TOOL 4 — Feature Engineering
+# TOOL 4 - Feature Engineering
 # ============================================================
 @tool("engineer_features")
 def engineer_features(filepath: str) -> str:
@@ -42,7 +42,7 @@ def engineer_features(filepath: str) -> str:
     and save features.csv to artifacts folder.
     """
     try:
-        progress.agent_start("Agent 4 — Feature Engineering")
+        progress.agent_start("Agent 4 - Feature Engineering")
 
         # Load data and contract
         progress.step(f"Loading {filepath}...")
@@ -58,13 +58,13 @@ def engineer_features(filepath: str) -> str:
         contract_cols = list(contract["columns"].keys())
         missing_cols = [c for c in contract_cols if c not in df.columns]
         if missing_cols:
-            raise ValueError(f"Contract validation failed — missing columns: {missing_cols}")
+            raise ValueError(f"Contract validation failed - missing columns: {missing_cols}")
 
         if df["Payment_Method"].isna().any():
-            raise ValueError("Contract validation failed — nulls in Payment_Method")
+            raise ValueError("Contract validation failed - nulls in Payment_Method")
         if df["Customer_Age"].isna().any():
-            raise ValueError("Contract validation failed — nulls in Customer_Age")
-        progress.step("Contract validation passed ✅")
+            raise ValueError("Contract validation failed - nulls in Customer_Age")
+        progress.step("Contract validation passed [OK]")
 
         # Parse dates
         df["Date_parsed"] = pd.to_datetime(
@@ -121,7 +121,7 @@ def engineer_features(filepath: str) -> str:
         df["Is_Cash"] = (df["Payment_Method"] == "Cash").astype(int)
         progress.step("Created feature: Is_Cash (Prediction 3 target)")
 
-        # Engineer Is_Family_Buyer — strong signal for multi-unit quantity
+        # Engineer Is_Family_Buyer - strong signal for multi-unit quantity
         df["Is_Family_Buyer"] = (
             df["Customer_Age"].between(35, 54) &
             (df["Price"] < 1200) &
@@ -141,7 +141,7 @@ def engineer_features(filepath: str) -> str:
             le = LabelEncoder()
             df[f"{col}_enc"] = le.fit_transform(df[col].astype(str))
             encoders[col] = le
-            progress.step(f"  Encoded: {col} → {col}_enc")
+            progress.step(f"  Encoded: {col} -> {col}_enc")
 
         # Save encoders for use in Streamlit app
         joblib.dump(encoders, "artifacts/models/label_encoders.pkl")
@@ -152,8 +152,8 @@ def engineer_features(filepath: str) -> str:
 
         # Save features
         df.to_csv("artifacts/features.csv", index=False)
-        progress.step(f"Saved artifacts/features.csv → {len(df):,} rows, {len(df.columns)} columns")
-        progress.agent_done("Agent 4 — Feature Engineering")
+        progress.step(f"Saved artifacts/features.csv -> {len(df):,} rows, {len(df.columns)} columns")
+        progress.agent_done("Agent 4 - Feature Engineering")
 
         return (
             f"Feature engineering complete.\n"
@@ -165,12 +165,12 @@ def engineer_features(filepath: str) -> str:
         )
 
     except Exception as e:
-        progress.error("Agent 4 — Feature Engineering", str(e))
+        progress.error("Agent 4 - Feature Engineering", str(e))
         raise
 
 
 # ============================================================
-# TOOL 5 — Model Training
+# TOOL 5 - Model Training
 # ============================================================
 @tool("train_models")
 def train_models(filepath: str) -> str:
@@ -179,7 +179,7 @@ def train_models(filepath: str) -> str:
     Save all models and test data to artifacts/models/.
     """
     try:
-        progress.agent_start("Agent 5 — Model Training")
+        progress.agent_start("Agent 5 - Model Training")
         progress.step(f"Loading {filepath}...")
 
         df = pd.read_csv(filepath)
@@ -193,7 +193,7 @@ def train_models(filepath: str) -> str:
             "Payment_Method", "Season", "Age_Group", "Price_Tier"
         ]
 
-        # Base encoded feature columns (Salesperson_ID excluded — noise)
+        # Base encoded feature columns (Salesperson_ID excluded - noise)
         base_features = [
             "Price", "Quantity", "Customer_Age",
             "Month", "Day_of_Week", "Is_Weekend", "Is_Family_Buyer",
@@ -203,7 +203,7 @@ def train_models(filepath: str) -> str:
 
         results = {}
 
-        # ── PREDICTION 1 — Quantity ──────────────────────────
+        # -- PREDICTION 1 - Quantity --------------------------
         progress.step("\n  Training Prediction 1: Quantity...")
         p1_features = [f for f in base_features
                        if f not in ["Quantity", "Is_Cash", "Payment_Method_enc"]]
@@ -215,16 +215,16 @@ def train_models(filepath: str) -> str:
         )
 
         # Logistic Regression
-        progress.step("    → Logistic Regression (Quantity)...")
+        progress.step("    -> Logistic Regression (Quantity)...")
         lr1 = LogisticRegression(
             max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
         )
         lr1.fit(X1_train, y1_train)
         joblib.dump(lr1, "artifacts/models/quantity_lr.pkl", compress=6)
-        progress.step("    ✅ quantity_lr.pkl saved")
+        progress.step("    [OK] quantity_lr.pkl saved")
 
         # Random Forest
-        progress.step("    → Random Forest (Quantity)...")
+        progress.step("    -> Random Forest (Quantity)...")
         rf1 = RandomForestClassifier(
             n_estimators=100,
             max_depth=20,
@@ -235,7 +235,7 @@ def train_models(filepath: str) -> str:
         )
         rf1.fit(X1_train, y1_train)
         joblib.dump(rf1, "artifacts/models/quantity_rf.pkl", compress=6)
-        progress.step("    ✅ quantity_rf.pkl saved")
+        progress.step("    [OK] quantity_rf.pkl saved")
 
         # Save test data
         joblib.dump((X1_test, y1_test, p1_features),
@@ -244,7 +244,7 @@ def train_models(filepath: str) -> str:
                                "X_test": X1_test, "y_test": y1_test,
                                "features": p1_features}
 
-        # ── PREDICTION 2 — Bike Model ────────────────────────
+        # -- PREDICTION 2 - Bike Model ------------------------
         progress.step("\n  Training Prediction 2: Bike_Model...")
         p2_features = [f for f in base_features
                        if f not in ["Bike_Model_enc", "Is_Cash",
@@ -257,16 +257,16 @@ def train_models(filepath: str) -> str:
         )
 
         # Logistic Regression
-        progress.step("    → Logistic Regression (Bike_Model)...")
+        progress.step("    -> Logistic Regression (Bike_Model)...")
         lr2 = LogisticRegression(
             max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
         )
         lr2.fit(X2_train, y2_train)
         joblib.dump(lr2, "artifacts/models/bike_model_lr.pkl", compress=6)
-        progress.step("    ✅ bike_model_lr.pkl saved")
+        progress.step("    [OK] bike_model_lr.pkl saved")
 
         # Random Forest
-        progress.step("    → Random Forest (Bike_Model)...")
+        progress.step("    -> Random Forest (Bike_Model)...")
         rf2 = RandomForestClassifier(
             n_estimators=100,
             max_depth=20,
@@ -277,7 +277,7 @@ def train_models(filepath: str) -> str:
         )
         rf2.fit(X2_train, y2_train)
         joblib.dump(rf2, "artifacts/models/bike_model_rf.pkl", compress=6)
-        progress.step("    ✅ bike_model_rf.pkl saved")
+        progress.step("    [OK] bike_model_rf.pkl saved")
 
         # Save test data
         joblib.dump((X2_test, y2_test, p2_features),
@@ -286,7 +286,7 @@ def train_models(filepath: str) -> str:
                                   "X_test": X2_test, "y_test": y2_test,
                                   "features": p2_features}
 
-        # ── PREDICTION 3 — Is_Cash ───────────────────────────
+        # -- PREDICTION 3 - Is_Cash ---------------------------
         progress.step("\n  Training Prediction 3: Is_Cash...")
         p3_features = [f for f in base_features
                        if f not in ["Is_Cash", "Payment_Method_enc"]]
@@ -298,16 +298,16 @@ def train_models(filepath: str) -> str:
         )
 
         # Logistic Regression
-        progress.step("    → Logistic Regression (Is_Cash)...")
+        progress.step("    -> Logistic Regression (Is_Cash)...")
         lr3 = LogisticRegression(
             max_iter=2000, random_state=RANDOM_SEED, class_weight="balanced"
         )
         lr3.fit(X3_train, y3_train)
         joblib.dump(lr3, "artifacts/models/payment_lr.pkl", compress=6)
-        progress.step("    ✅ payment_lr.pkl saved")
+        progress.step("    [OK] payment_lr.pkl saved")
 
         # Random Forest
-        progress.step("    → Random Forest (Is_Cash)...")
+        progress.step("    -> Random Forest (Is_Cash)...")
         rf3 = RandomForestClassifier(
             n_estimators=100,
             max_depth=20,
@@ -318,7 +318,7 @@ def train_models(filepath: str) -> str:
         )
         rf3.fit(X3_train, y3_train)
         joblib.dump(rf3, "artifacts/models/payment_rf.pkl", compress=6)
-        progress.step("    ✅ payment_rf.pkl saved")
+        progress.step("    [OK] payment_rf.pkl saved")
 
         # Save test data
         joblib.dump((X3_test, y3_test, p3_features),
@@ -327,7 +327,7 @@ def train_models(filepath: str) -> str:
                                "X_test": X3_test, "y_test": y3_test,
                                "features": p3_features}
 
-        progress.agent_done("Agent 5 — Model Training")
+        progress.agent_done("Agent 5 - Model Training")
 
         return (
             "Model training complete.\n"
@@ -339,12 +339,12 @@ def train_models(filepath: str) -> str:
         )
 
     except Exception as e:
-        progress.error("Agent 5 — Model Training", str(e))
+        progress.error("Agent 5 - Model Training", str(e))
         raise
 
 
 # ============================================================
-# TOOL 6 — Model Evaluation
+# TOOL 6 - Model Evaluation
 # ============================================================
 @tool("evaluate_models")
 def evaluate_models(features_path: str) -> str:
@@ -353,7 +353,7 @@ def evaluate_models(features_path: str) -> str:
     generate charts and save evaluation_report.md.
     """
     try:
-        progress.agent_start("Agent 6 — Model Evaluation")
+        progress.agent_start("Agent 6 - Model Evaluation")
 
         predictions = {
             "quantity": {
@@ -377,9 +377,9 @@ def evaluate_models(features_path: str) -> str:
         }
 
         report_lines = [
-            "# 🚲 Bike Sales — Model Evaluation Report\n",
-            "**Author:** Rachel Barazani — AI Developer  ",
-            "**Course:** AI Developer Program — Hebrew University 2026\n",
+            "# Bike Sales - Model Evaluation Report\n",
+            "**Author:** Rachel Barazani - AI Developer  ",
+            "**Course:** AI Developer Program - Hebrew University 2026\n",
             "---\n"
         ]
 
@@ -416,7 +416,7 @@ def evaluate_models(features_path: str) -> str:
             fig, ax = plt.subplots(figsize=(8, 5))
             ax.bar(["Logistic Regression", "Random Forest"],
                    [lr_acc, rf_acc], color=["#4C72B0", "#55A868"])
-            ax.set_title(f"{pred['name']} — Accuracy Comparison",
+            ax.set_title(f"{pred['name']} - Accuracy Comparison",
                         fontsize=13, fontweight="bold")
             ax.set_ylabel("Accuracy (%)")
             ax.set_ylim(0, 100)
@@ -430,7 +430,7 @@ def evaluate_models(features_path: str) -> str:
             fig, ax = plt.subplots(figsize=(8, 5))
             ax.bar(["Logistic Regression", "Random Forest"],
                    [lr_f1, rf_f1], color=["#C44E52", "#8172B2"])
-            ax.set_title(f"{pred['name']} — F1 Score Comparison",
+            ax.set_title(f"{pred['name']} - F1 Score Comparison",
                         fontsize=13, fontweight="bold")
             ax.set_ylabel("F1 Score (%)")
             ax.set_ylim(0, 100)
@@ -448,7 +448,7 @@ def evaluate_models(features_path: str) -> str:
                 fig, ax = plt.subplots(figsize=(8, 6))
                 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", ax=ax)
                 ax.set_title(
-                    f"{pred['name']} — Confusion Matrix "
+                    f"{pred['name']} - Confusion Matrix "
                     f"({'LR' if label == 'lr' else 'RF'})",
                     fontsize=12, fontweight="bold"
                 )
@@ -470,7 +470,7 @@ def evaluate_models(features_path: str) -> str:
             sns.barplot(x=top_importances, y=top_features, ax=ax,
                        orient="h")
             ax.set_title(
-                f"{pred['name']} — Top 10 Feature Importance (RF)",
+                f"{pred['name']} - Top 10 Feature Importance (RF)",
                 fontsize=13, fontweight="bold"
             )
             ax.set_xlabel("Importance")
@@ -499,7 +499,7 @@ def evaluate_models(features_path: str) -> str:
                 f"```",
                 classification_report(y_test, rf_pred),
                 f"```\n",
-                f"### ✅ Winner: {winner} (F1: {winner_f1}%)\n",
+                f"### [OK] Winner: {winner} (F1: {winner_f1}%)\n",
                 "---\n"
             ]
 
@@ -507,7 +507,7 @@ def evaluate_models(features_path: str) -> str:
         best_key = max(best_models, key=lambda k: best_models[k]["f1"])
         best = best_models[best_key]
         report_lines += [
-            f"\n## 🏆 Overall Best Model\n",
+            f"\n## Overall Best Model\n",
             f"- Prediction: {predictions[best_key]['name']}",
             f"- Model: {best['name']}",
             f"- F1 Score: {best['f1']}%",
@@ -522,7 +522,7 @@ def evaluate_models(features_path: str) -> str:
 
         # Save best models info for Agent 7
         joblib.dump(best_models, "artifacts/models/best_models.pkl")
-        progress.agent_done("Agent 6 — Model Evaluation")
+        progress.agent_done("Agent 6 - Model Evaluation")
 
         return (
             "Evaluation complete.\n"
@@ -532,12 +532,12 @@ def evaluate_models(features_path: str) -> str:
         )
 
     except Exception as e:
-        progress.error("Agent 6 — Model Evaluation", str(e))
+        progress.error("Agent 6 - Model Evaluation", str(e))
         raise
 
 
 # ============================================================
-# TOOL 7 — Model Card & Business Recommendations
+# TOOL 7 - Model Card & Business Recommendations
 # ============================================================
 @tool("write_model_card")
 def write_model_card(evaluation_path: str) -> str:
@@ -545,7 +545,7 @@ def write_model_card(evaluation_path: str) -> str:
     Write model_card.md and save best model as model.pkl.
     """
     try:
-        progress.agent_start("Agent 7 — Model Card & Business Recommendations")
+        progress.agent_start("Agent 7 - Model Card & Business Recommendations")
 
         # Load evaluation results
         progress.step("Loading evaluation results...")
@@ -572,11 +572,11 @@ def write_model_card(evaluation_path: str) -> str:
         # Write model card
         progress.step("Writing model_card.md...")
 
-        card = f"""# 🚲 Bike Sales AI Pipeline — Hebrew University 2026 Final Project — Model Card
+        card = f"""# Bike Sales AI Pipeline - Hebrew University 2026 Final Project - Model Card
 
-**Author:** Rachel Barazani — AI Developer  
-**Course:** AI Developer Program — Hebrew University 2026  
-**Generated by:** Crew 2 — Agent 7  
+**Author:** Rachel Barazani - AI Developer  
+**Course:** AI Developer Program - Hebrew University 2026  
+**Generated by:** Crew 2 - Agent 7  
 
 ---
 
@@ -595,8 +595,8 @@ Three classification models trained to answer business questions:
 ## Training Data Summary
 
 - **Dataset:** Bike Sales 100k (cleaned version)
-- **Source:** Kaggle — jayavarman/bike-sales-data-of-100k
-- **Original file:** bike_sales_100k.csv (not included — see data/README.md)
+- **Source:** Kaggle - jayavarman/bike-sales-data-of-100k
+- **Original file:** bike_sales_100k.csv (not included - see data/README.md)
 - **Pipeline input:** bike_sales_dirty.csv (intentionally dirtied for cleaning demo)
 - **Rows after cleaning:** {len(df):,}
 - **Train/test split:** 80% train / 20% test
@@ -608,10 +608,10 @@ Three classification models trained to answer business questions:
 
 ---
 
-## Prediction 1 — Purchase Quantity
+## Prediction 1 - Purchase Quantity
 
 ### Purpose
-Predict how many bikes (1–5) a customer will purchase in a single transaction.
+Predict how many bikes (1-5) a customer will purchase in a single transaction.
 Helps stores with inventory planning and staffing decisions.
 
 ### Features Used
@@ -625,7 +625,7 @@ Store_Location_enc, Month, Season_enc, Day_of_Week, Is_Weekend, Age_Group_enc
 
 ---
 
-## Prediction 2 — Bike Model Recommendation
+## Prediction 2 - Bike Model Recommendation
 
 ### Purpose
 Recommend the most likely bike model for a given customer profile.
@@ -639,11 +639,11 @@ Day_of_Week, Is_Weekend, Age_Group_enc
 ### Limitations
 - Limited to 7 bike models present in training data
 - Does not account for inventory availability or new models
-- Recommendation is probabilistic — not a guarantee of purchase intent
+- Recommendation is probabilistic - not a guarantee of purchase intent
 
 ---
 
-## Prediction 3 — Cash Payment Prediction
+## Prediction 3 - Cash Payment Prediction
 
 ### Purpose
 Identify customers likely to pay cash and analyze payment access barriers.
@@ -665,14 +665,14 @@ Day_of_Week, Is_Weekend
 
 ### Cash Discount Recommendation
 The cash payment model is used **solely** to identify market expansion
-opportunities — NOT to target, exclude, or discriminate against any
+opportunities - NOT to target, exclude, or discriminate against any
 customer group.
 
 The recommended cash discount applies **UNIVERSALLY** to all customers
 regardless of age, gender, location, or any demographic characteristic.
 
 Age group analysis identifies who benefits most from removing payment
-barriers — this is consistent with responsible and fair retail practice.
+barriers - this is consistent with responsible and fair retail practice.
 
 ### Bias Assessment
 - All models evaluated across all age groups and genders
@@ -705,15 +705,15 @@ All models are fully reproducible:
 
 ---
 
-*Generated by Bike Sales AI Pipeline — Hebrew University 2026 Final Project — CrewAI*  
-*Rachel Barazani — AI Developer | Hebrew University 2026*
+*Generated by Bike Sales AI Pipeline - Hebrew University 2026 Final Project - CrewAI*  
+*Rachel Barazani - AI Developer | Hebrew University 2026*
 """
 
         with open("artifacts/model_card.md", "w", encoding="utf-8") as f:
             f.write(card)
 
         progress.step("Saved artifacts/model_card.md")
-        progress.agent_done("Agent 7 — Model Card & Business Recommendations")
+        progress.agent_done("Agent 7 - Model Card & Business Recommendations")
 
         return (
             "Model card complete.\n"
@@ -722,5 +722,5 @@ All models are fully reproducible:
         )
 
     except Exception as e:
-        progress.error("Agent 7 — Model Card & Business Recommendations", str(e))
+        progress.error("Agent 7 - Model Card & Business Recommendations", str(e))
         raise
