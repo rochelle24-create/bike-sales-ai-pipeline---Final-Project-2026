@@ -34,11 +34,11 @@
 
 ## Payment Barrier Observation
 
-**23.4% of all transactions are paid in cash** — making cash the most
-common single payment method in the dataset. Ages **65+** and **18-24**
-show the lowest overall transaction frequency, and also show the highest
-cash reliance — suggesting a potential **payment access barrier** rather
-than lack of interest in bike purchases.
+**23.4% of all transactions are paid in cash** — making cash the
+most common single payment method in the dataset. Ages **65+**
+and **18-24** show the lowest overall transaction frequency,
+and also show the highest cash reliance — suggesting a potential
+**payment access barrier** rather than lack of interest in bike purchases.
 
 ### Universal Cash Discount Recommendation
 
@@ -58,13 +58,13 @@ cash discount signals to these groups that the store welcomes them —
 removing the silent barrier that digital-only pricing creates.
 
 **2. Reward existing cash-paying customers**
-23.4% of current customers already pay cash. A discount rewards their
-loyalty and deepens retention at no cost to acquisition.
+23.4% of current customers already pay cash. A discount rewards
+their loyalty and deepens retention at no cost to acquisition.
 
 **3. Incentivise existing customers to switch to cash**
 A cash discount gives every digital-payment customer a positive reason
-to consider paying cash. That 23.4% figure has room to grow — and the
-store benefits every time it does.
+to consider paying cash. That 23.4% figure has room to grow —
+and the store benefits every time it does.
 
 **4. The discount can be self-funding**
 Credit and debit card processing fees typically run 1.5–3.5% per

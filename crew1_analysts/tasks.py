@@ -1,14 +1,14 @@
 # crew1_analysts/tasks.py
-# Crew 1 — Data Analyst Crew — Task Definitions
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# Crew 1 - Data Analyst Crew - Task Definitions
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 from crewai import Task
 from crew1_analysts.agents import data_ingestion_agent, eda_agent, contract_agent
 
 
 # ============================================================
-# TASK 1 — Data Ingestion, Validation & Cleaning
+# TASK 1 - Data Ingestion, Validation & Cleaning
 # ============================================================
 task_ingest_clean = Task(
     description="""
@@ -16,7 +16,7 @@ task_ingest_clean = Task(
     
     Follow these exact steps in order:
     
-    STEP 1 — LOAD & VALIDATE:
+    STEP 1 - LOAD & VALIDATE:
     - Load data/bike_sales_dirty.csv using pandas
     - Verify all 11 columns exist: Sale_ID, Date, Customer_ID, Bike_Model, 
       Price, Quantity, Store_Location, Salesperson_ID, Payment_Method, 
@@ -24,46 +24,46 @@ task_ingest_clean = Task(
     - If any column is missing raise a ValueError with a clear message
     - Log: total rows loaded
     
-    STEP 2 — REMOVE DUPLICATES:
+    STEP 2 - REMOVE DUPLICATES:
     - Drop all duplicate rows
     - Log: number of duplicates removed
     
-    STEP 3 — HANDLE MISSING VALUES:
-    - DROP rows where Payment_Method is null (target variable — never impute)
+    STEP 3 - HANDLE MISSING VALUES:
+    - DROP rows where Payment_Method is null (target variable - never impute)
     - DROP rows where Customer_Age is null (critical feature for Prediction 3)
     - FILL Store_Location nulls with "Unknown"
     - FILL Customer_Gender nulls with "Unknown"
     - FILL Price nulls with median price per Bike_Model group
     - Log: rows dropped and values filled
     
-    STEP 4 — STANDARDIZE GENDER:
+    STEP 4 - STANDARDIZE GENDER:
     - Map all variants to standard values:
-      M, male, MALE, m → Male
-      F, female, FEMALE, f → Female
+      M, male, MALE, m -> Male
+      F, female, FEMALE, f -> Female
       Keep Unknown as Unknown
     
-    STEP 5 — STANDARDIZE BIKE MODEL:
+    STEP 5 - STANDARDIZE BIKE MODEL:
     - Strip whitespace from all Bike_Model values
     - Convert to Title Case
     - Valid values: BMX, Road Bike, Cruiser, Folding Bike, 
       Hybrid Bike, Electric Bike, Mountain Bike
     
-    STEP 6 — STANDARDIZE PAYMENT METHOD:
+    STEP 6 - STANDARDIZE PAYMENT METHOD:
     - Map all variants to standard values:
-      cash, CASH, cash payment → Cash
+      cash, CASH, cash payment -> Cash
       Keep all other values as-is but strip whitespace
     
-    STEP 7 — NORMALIZE DATES:
+    STEP 7 - NORMALIZE DATES:
     - Parse all date formats (DD-MM-YYYY, DD/MM/YYYY, DD.MM.YYYY)
     - Save all dates as DD-MM-YYYY string format
     
-    STEP 8 — REMOVE OUTLIERS & INVALID VALUES:
+    STEP 8 - REMOVE OUTLIERS & INVALID VALUES:
     - Remove rows where Price < 10 or Price > 50000
     - Remove rows where Customer_Age < 18 or Customer_Age > 100
     - Remove rows where Quantity < 1
     - Strip whitespace from Store_Location
     
-    STEP 9 — SAVE OUTPUT:
+    STEP 9 - SAVE OUTPUT:
     - Save cleaned dataframe to artifacts/clean_data.csv
     - Log final row count and column list
     
@@ -88,7 +88,7 @@ task_ingest_clean = Task(
 
 
 # ============================================================
-# TASK 2 — EDA & Visualizations
+# TASK 2 - EDA & Visualizations
 # ============================================================
 task_eda = Task(
     description="""
@@ -98,25 +98,25 @@ task_eda = Task(
     Generate exactly these 12 charts using matplotlib and seaborn:
     
     SALES PERFORMANCE:
-    1. Bar chart — Sales count by Store Location
-    2. Line chart — Sales count by Month (seasonal trends)
-    3. Box plot — Price distribution by Bike Model
+    1. Bar chart - Sales count by Store Location
+    2. Line chart - Sales count by Month (seasonal trends)
+    3. Box plot - Price distribution by Bike Model
     
     CUSTOMER PROFILE:
-    4. Histogram — Customer Age distribution
-    5. Bar chart — Customer count by Age Group 
+    4. Histogram - Customer Age distribution
+    5. Bar chart - Customer count by Age Group 
        (18-24, 25-34, 35-44, 45-54, 55-64, 65-70)
-    6. Pie chart — Gender distribution (Male/Female/Unknown)
+    6. Pie chart - Gender distribution (Male/Female/Unknown)
     
     PAYMENT ANALYSIS (feeds Prediction 3):
-    7. Pie chart — Payment Method distribution
-    8. Bar chart — Cash rate by Age Group (% cash per age group)
-    9. Grouped bar chart — Payment Method by Age Group
+    7. Pie chart - Payment Method distribution
+    8. Bar chart - Cash rate by Age Group (% cash per age group)
+    9. Grouped bar chart - Payment Method by Age Group
     
     PREDICTION TARGETS:
-    10. Bar chart — Quantity distribution (count per quantity 1-5)
-    11. Heatmap — Bike Model by Age Group (count heatmap)
-    12. Bar chart — Bike Model distribution (count per model)
+    10. Bar chart - Quantity distribution (count per quantity 1-5)
+    11. Heatmap - Bike Model by Age Group (count heatmap)
+    12. Bar chart - Bike Model distribution (count per model)
     
     For each chart:
     - Add a clear title and axis labels
@@ -140,7 +140,7 @@ task_eda = Task(
     - 5 organized sections with headers
     - Dataset summary statistics
     - Clean professional styling
-    - No external dependencies — opens in any browser
+    - No external dependencies - opens in any browser
     """,
     agent=eda_agent,
     context=[task_ingest_clean]
@@ -148,13 +148,13 @@ task_eda = Task(
 
 
 # ============================================================
-# TASK 3 — Business Insights & Dataset Contract
+# TASK 3 - Business Insights & Dataset Contract
 # ============================================================
 task_contract = Task(
     description="""
     Analyze artifacts/clean_data.csv and produce two output files.
     
-    OUTPUT 1 — artifacts/insights.md:
+    OUTPUT 1 - artifacts/insights.md:
     
     Write a business insights markdown file with these sections:
     
@@ -191,12 +191,12 @@ task_contract = Task(
     - Bike Model distribution summary  
     - Cash vs non-cash split
     
-    OUTPUT 2 — artifacts/dataset_contract.json:
+    OUTPUT 2 - artifacts/dataset_contract.json:
     
     Create a JSON contract with this exact structure:
     {{
       "contract_version": "1.0",
-      "created_by": "Crew 1 — Agent 3",
+      "created_by": "Crew 1 - Agent 3",
       "dataset": "Bike Sales Clean Data",
       "total_rows": <actual row count>,
       "total_columns": 11,
@@ -240,8 +240,8 @@ task_contract = Task(
     """,
     expected_output="""
     Two files saved to artifacts/:
-    1. insights.md — business narrative with all sections complete
-    2. dataset_contract.json — valid JSON schema contract
+    1. insights.md - business narrative with all sections complete
+    2. dataset_contract.json - valid JSON schema contract
     Both files must be present for the CrewAI Flow validation to pass.
     """,
     agent=contract_agent,

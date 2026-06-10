@@ -1,7 +1,7 @@
 # utils/llm_selector.py
-# AI Backend Selection — Ollama or Anthropic
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# AI Backend Selection - Ollama or Anthropic
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 import os
 import requests
@@ -16,20 +16,20 @@ def get_llm() -> LLM:
     Prompt user to select AI backend at startup.
     Returns configured LLM instance passed to all agents.
     """
-    print("\n" + "╔" + "═" * 58 + "╗")
-    print("║" + "BIKE SALES AI PIPELINE".center(58) + "║")
-    print("║" + "HEBREW UNIVERSITY 2026 FINAL PROJECT".center(58) + "║")
-    print("║" + "Rachel Barazani — AI Developer".center(58) + "║")
-    print("╠" + "═" * 58 + "╣")
-    print("║  Select AI backend:                                      ║")
-    print("║                                                          ║")
-    print("║  [1] Local  — Ollama        (free, runs offline)         ║")
-    print("║  [2] Cloud  — Anthropic Haiku   (~$0.05/run)             ║")
-    print("║  [3] Cloud  — Anthropic Sonnet  (~$0.20/run)             ║")
-    print("║                                                          ║")
-    print("║  Your API key is never stored in GitHub.                 ║")
-    print("║  It is read from your local .env file only.              ║")
-    print("╚" + "═" * 58 + "╝")
+    print("\n" + "+" + "=" * 58 + "+")
+    print("|" + "BIKE SALES AI PIPELINE".center(58) + "|")
+    print("|" + "HEBREW UNIVERSITY 2026 FINAL PROJECT".center(58) + "|")
+    print("|" + "Rachel Barazani - AI Developer".center(58) + "|")
+    print("+" + "=" * 58 + "+")
+    print("|  Select AI backend:                                      |")
+    print("|                                                          |")
+    print("|  [1] Local  - Ollama        (free, runs offline)         |")
+    print("|  [2] Cloud  - Anthropic Haiku   (~$0.05/run)             |")
+    print("|  [3] Cloud  - Anthropic Sonnet  (~$0.20/run)             |")
+    print("|                                                          |")
+    print("|  Your API key is never stored in GitHub.                 |")
+    print("|  It is read from your local .env file only.              |")
+    print("+" + "=" * 58 + "+")
 
     choice = os.getenv("LLM_CHOICE") or input("\nEnter 1, 2 or 3: ").strip()
 
@@ -40,7 +40,7 @@ def get_llm() -> LLM:
     elif choice == "3":
         return _setup_anthropic("claude-sonnet-4-20250514", "Sonnet")
     else:
-        print("  Invalid choice — defaulting to Ollama.")
+        print("  Invalid choice - defaulting to Ollama.")
         return _setup_ollama()
 
 
@@ -52,7 +52,7 @@ def _setup_ollama() -> LLM:
         requests.get("http://localhost:11434", timeout=3)
     except requests.exceptions.ConnectionError:
         raise ConnectionError(
-            "\n❌ Ollama is not running.\n"
+            "\n[X] Ollama is not running.\n"
             "   Start it with: ollama serve\n"
             "   Then pull a model: ollama pull llama3\n"
         )
@@ -68,7 +68,7 @@ def _setup_ollama() -> LLM:
                      for m in response.json().get("models", [])]
         if model not in available:
             raise ValueError(
-                f"\n❌ Model '{model}' not found in Ollama.\n"
+                f"\n[X] Model '{model}' not found in Ollama.\n"
                 f"   Pull it with: ollama pull {model}\n"
                 f"   Available models: {', '.join(available)}\n"
             )
@@ -80,7 +80,7 @@ def _setup_ollama() -> LLM:
         base_url="http://localhost:11434"
     )
 
-    print(f"\n  ✅ Using Ollama — {model}")
+    print(f"\n  [OK] Using Ollama - {model}")
     return llm
 
 
@@ -96,7 +96,7 @@ def _setup_anthropic(model: str, model_name: str) -> LLM:
     # Validate key format
     if not api_key.startswith("sk-ant-"):
         raise ValueError(
-            "\n❌ Invalid Anthropic API key format.\n"
+            "\n[X] Invalid Anthropic API key format.\n"
             "   Key must start with: sk-ant-\n"
             "   Get your key at: https://console.anthropic.com\n"
         )
@@ -105,14 +105,14 @@ def _setup_anthropic(model: str, model_name: str) -> LLM:
     if not os.getenv("ANTHROPIC_API_KEY"):
         with open(".env", "a") as f:
             f.write(f"\nANTHROPIC_API_KEY={api_key}")
-        print("  ✅ API key saved to .env for future runs")
+        print("  [OK] API key saved to .env for future runs")
 
     llm = LLM(
         model=model,
         api_key=api_key
     )
 
-    print(f"\n  ✅ Using Anthropic {model_name} — {model}")
+    print(f"\n  [OK] Using Anthropic {model_name} - {model}")
     return llm
 
 

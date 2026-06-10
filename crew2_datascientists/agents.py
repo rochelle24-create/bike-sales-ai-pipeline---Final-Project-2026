@@ -1,17 +1,17 @@
 # crew2_datascientists/agents.py
-# Crew 2 — Data Scientist Crew — Agent Definitions
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# Crew 2 - Data Scientist Crew - Agent Definitions
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 from crewai import Agent
 from utils.llm_selector import get_llm
 
-# Get LLM once — passed to all agents
+# Get LLM once - passed to all agents
 llm = get_llm()
 
 
 # ============================================================
-# AGENT 4 — Feature Engineer
+# AGENT 4 - Feature Engineer
 # ============================================================
 feature_engineer = Agent(
     role="Feature Engineering Specialist",
@@ -34,7 +34,7 @@ feature_engineer = Agent(
 
 
 # ============================================================
-# AGENT 5 — Model Trainer
+# AGENT 5 - Model Trainer
 # ============================================================
 model_trainer = Agent(
     role="Machine Learning Model Trainer",
@@ -58,7 +58,7 @@ model_trainer = Agent(
 
 
 # ============================================================
-# AGENT 6 — Model Evaluator
+# AGENT 6 - Model Evaluator
 # ============================================================
 model_evaluator = Agent(
     role="Model Evaluation Specialist",
@@ -81,7 +81,7 @@ model_evaluator = Agent(
 
 
 # ============================================================
-# AGENT 7 — Model Card & Business Recommendations Writer
+# AGENT 7 - Model Card & Business Recommendations Writer
 # ============================================================
 model_card_writer = Agent(
     role="Model Card and Business Recommendations Writer",

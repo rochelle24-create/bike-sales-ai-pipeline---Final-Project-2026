@@ -1,7 +1,7 @@
 # crew2_datascientists/tasks.py
-# Crew 2 — Data Scientist Crew — Task Definitions
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# Crew 2 - Data Scientist Crew - Task Definitions
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 from crewai import Task
 from crew2_datascientists.agents import (
@@ -13,21 +13,21 @@ from crew2_datascientists.agents import (
 
 
 # ============================================================
-# TASK 4 — Feature Engineering
+# TASK 4 - Feature Engineering
 # ============================================================
 task_feature_engineering = Task(
     description="""
     Read artifacts/clean_data.csv and artifacts/dataset_contract.json.
     Validate the contract then engineer new features.
 
-    STEP 1 — VALIDATE CONTRACT:
+    STEP 1 - VALIDATE CONTRACT:
     - Load dataset_contract.json
     - Confirm all contract columns exist in clean_data.csv
     - Confirm column data types match contract
     - Confirm no nulls in Payment_Method or Customer_Age
     - If any check fails raise a ValueError with clear message
 
-    STEP 2 — ENGINEER FEATURES:
+    STEP 2 - ENGINEER FEATURES:
     Create these new columns:
 
     From Date:
@@ -50,7 +50,7 @@ task_feature_engineering = Task(
     - Is_Cash: integer 1 if Cash else 0
       (THIS IS THE TARGET FOR PREDICTION 3)
 
-    STEP 3 — ENCODE CATEGORICALS:
+    STEP 3 - ENCODE CATEGORICALS:
     Label encode these columns for modeling:
     - Bike_Model
     - Store_Location
@@ -64,7 +64,7 @@ task_feature_engineering = Task(
     - Original: Bike_Model, Store_Location, etc.
     - Encoded: Bike_Model_enc, Store_Location_enc, etc.
 
-    STEP 4 — SAVE:
+    STEP 4 - SAVE:
     - Save to artifacts/features.csv
     - Log all features created and final row/column count
 
@@ -87,7 +87,7 @@ task_feature_engineering = Task(
 
 
 # ============================================================
-# TASK 5 — Model Training
+# TASK 5 - Model Training
 # ============================================================
 task_model_training = Task(
     description="""
@@ -100,7 +100,7 @@ task_model_training = Task(
     - Drop these columns from ALL feature sets:
       Sale_ID, Customer_ID, Date, Date_parsed (if exists)
 
-    PREDICTION 1 — Quantity (multi-class classification):
+    PREDICTION 1 - Quantity (multi-class classification):
     Target: Quantity (classes 1, 2, 3, 4, 5)
     Features: all encoded columns EXCEPT Quantity and Is_Cash
 
@@ -112,7 +112,7 @@ task_model_training = Task(
     - n_estimators=100, random_state=42
     - Save as artifacts/models/quantity_rf.pkl
 
-    PREDICTION 2 — Bike Model (multi-class classification):
+    PREDICTION 2 - Bike Model (multi-class classification):
     Target: Bike_Model_enc
     Features: all encoded columns EXCEPT Bike_Model,
               Bike_Model_enc, and Is_Cash
@@ -125,7 +125,7 @@ task_model_training = Task(
     - n_estimators=100, random_state=42
     - Save as artifacts/models/bike_model_rf.pkl
 
-    PREDICTION 3 — Is_Cash (binary classification):
+    PREDICTION 3 - Is_Cash (binary classification):
     Target: Is_Cash
     Features: all encoded columns EXCEPT Payment_Method,
               Payment_Method_enc, and Is_Cash
@@ -163,7 +163,7 @@ task_model_training = Task(
 
 
 # ============================================================
-# TASK 6 — Model Evaluation
+# TASK 6 - Model Evaluation
 # ============================================================
 task_model_evaluation = Task(
     description="""
@@ -172,18 +172,18 @@ task_model_evaluation = Task(
 
     FOR EACH PREDICTION (Quantity, Bike_Model, Is_Cash):
 
-    STEP 1 — LOAD:
+    STEP 1 - LOAD:
     - Load both models (.pkl files)
     - Load corresponding test data
 
-    STEP 2 — EVALUATE BOTH MODELS:
+    STEP 2 - EVALUATE BOTH MODELS:
     Compute for each model:
     - Accuracy score
     - F1 Score (weighted average)
     - Classification Report (precision, recall, f1 per class)
     - Confusion Matrix
 
-    STEP 3 — GENERATE CHARTS:
+    STEP 3 - GENERATE CHARTS:
     Save these charts to artifacts/models/:
 
     For each prediction:
@@ -196,10 +196,10 @@ task_model_evaluation = Task(
     - feature_importance_rf_[prediction].png
       (top 10 features from Random Forest)
 
-    STEP 4 — WRITE evaluation_report.md:
+    STEP 4 - WRITE evaluation_report.md:
 
     Structure:
-    # Bike Sales — Model Evaluation Report
+    # Bike Sales - Model Evaluation Report
 
     ## Prediction 1: Purchase Quantity
     ### Logistic Regression Results
@@ -241,22 +241,22 @@ task_model_evaluation = Task(
 
 
 # ============================================================
-# TASK 7 — Model Card & Business Recommendations
+# TASK 7 - Model Card & Business Recommendations
 # ============================================================
 task_model_card = Task(
     description="""
     Write a comprehensive model card and business recommendation.
 
-    STEP 1 — READ EVALUATION RESULTS:
+    STEP 1 - READ EVALUATION RESULTS:
     - Load artifacts/evaluation_report.md
     - Identify best model per prediction by F1 score
     - Copy best overall model to artifacts/models/model.pkl
 
-    STEP 2 — WRITE artifacts/model_card.md:
+    STEP 2 - WRITE artifacts/model_card.md:
 
-    # Bike Sales AI Pipeline — Hebrew University 2026 Final Project — Model Card
-    **Author:** Rachel Barazani — AI Developer
-    **Course:** AI Developer Program — Hebrew University 2026
+    # Bike Sales AI Pipeline - Hebrew University 2026 Final Project - Model Card
+    **Author:** Rachel Barazani - AI Developer
+    **Course:** AI Developer Program - Hebrew University 2026
 
     ## Model Overview
     Three classification models predicting:
@@ -266,7 +266,7 @@ task_model_card = Task(
 
     ## Training Data Summary
     - Dataset: Bike Sales 100k (cleaned)
-    - Source: Kaggle — jayavarman/bike-sales-data-of-100k
+    - Source: Kaggle - jayavarman/bike-sales-data-of-100k
     - Rows used: [actual count]
     - Train/test split: 80/20
     - Random seed: 42
@@ -278,16 +278,16 @@ task_model_card = Task(
     | Bike Model | [model]   | [score]  | [score]  |
     | Is_Cash    | [model]   | [score]  | [score]  |
 
-    ## Prediction 1 — Purchase Quantity
+    ## Prediction 1 - Purchase Quantity
     ### Purpose
     Predict how many bikes a customer will purchase in one transaction.
     ### Features Used
     [list top features by importance]
     ### Limitations
-    - Dataset is synthetically balanced — real distributions may differ
+    - Dataset is synthetically balanced - real distributions may differ
     - Model trained on 7 US city locations only
 
-    ## Prediction 2 — Bike Model Recommendation
+    ## Prediction 2 - Bike Model Recommendation
     ### Purpose
     Recommend the most likely bike model for a customer profile.
     ### Features Used
@@ -296,7 +296,7 @@ task_model_card = Task(
     - Limited to 7 bike models in training data
     - Does not account for inventory availability
 
-    ## Prediction 3 — Cash Payment Prediction
+    ## Prediction 3 - Cash Payment Prediction
     ### Purpose
     Identify customers likely to pay cash and analyze payment barriers.
     ### Features Used
@@ -309,7 +309,7 @@ task_model_card = Task(
 
     ### Cash Discount Recommendation
     The cash payment model is used to identify market expansion
-    opportunities — NOT to target, exclude, or discriminate
+    opportunities - NOT to target, exclude, or discriminate
     against any customer group.
 
     The recommended cash discount applies UNIVERSALLY to all
@@ -317,7 +317,7 @@ task_model_card = Task(
     demographic characteristic.
 
     Age group analysis identifies who benefits most from removing
-    payment barriers — consistent with responsible retail practice.
+    payment barriers - consistent with responsible retail practice.
 
     ### Bias Assessment
     - Model evaluated across all age groups and genders
@@ -329,7 +329,7 @@ task_model_card = Task(
     characteristics. All recommendations are made at the
     business level, not the individual level.
 
-    STEP 3 — SAVE best model:
+    STEP 3 - SAVE best model:
     - Load evaluation results
     - Find model with highest weighted F1 score
     - Copy that model file to artifacts/models/model.pkl
@@ -340,8 +340,8 @@ task_model_card = Task(
     - Log completion of each section
     """,
     expected_output="""
-    artifacts/model_card.md — comprehensive model documentation
-    artifacts/models/model.pkl — best performing model saved
+    artifacts/model_card.md - comprehensive model documentation
+    artifacts/models/model.pkl - best performing model saved
     Both files required for project submission.
     """,
     agent=model_card_writer,

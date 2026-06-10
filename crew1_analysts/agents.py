@@ -1,17 +1,17 @@
 # crew1_analysts/agents.py
-# Crew 1 — Data Analyst Crew — Agent Definitions
-# Author: Rachel Barazani — AI Developer
-# Course: AI Developer Program — Hebrew University 2026
+# Crew 1 - Data Analyst Crew - Agent Definitions
+# Author: Rachel Barazani - AI Developer
+# Course: AI Developer Program - Hebrew University 2026
 
 from crewai import Agent
 from utils.llm_selector import get_llm
 
-# Get LLM once — passed to all agents
+# Get LLM once - passed to all agents
 llm = get_llm()
 
 
 # ============================================================
-# AGENT 1 — Data Ingestion, Validation & Cleaning
+# AGENT 1 - Data Ingestion, Validation & Cleaning
 # ============================================================
 data_ingestion_agent = Agent(
     role="Data Ingestion and Cleaning Specialist",
@@ -33,7 +33,7 @@ data_ingestion_agent = Agent(
 
 
 # ============================================================
-# AGENT 2 — EDA & Visualizations
+# AGENT 2 - EDA & Visualizations
 # ============================================================
 eda_agent = Agent(
     role="Exploratory Data Analyst",
@@ -55,7 +55,7 @@ eda_agent = Agent(
 
 
 # ============================================================
-# AGENT 3 — Business Insights & Dataset Contract
+# AGENT 3 - Business Insights & Dataset Contract
 # ============================================================
 contract_agent = Agent(
     role="Business Insights and Data Contract Specialist",
