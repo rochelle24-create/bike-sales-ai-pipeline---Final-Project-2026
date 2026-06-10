@@ -1,4 +1,4 @@
-## Project Notes — Bike Sales AI Pipeline
+## Project Notes — Bike Sales AI Pipeline — Hebrew University 2026 Final Project
 **Rachel Barazani — AI Developer | Hebrew University 2026**
 
 ---

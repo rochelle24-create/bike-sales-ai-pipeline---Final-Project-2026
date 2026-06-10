@@ -1,5 +1,5 @@
 # app/streamlit_app.py
-# Bike Sales AI Pipeline — Streamlit Web App
+# Bike Sales AI Pipeline — Hebrew University 2026 Final Project — Streamlit Web App
 # Author: Rachel Barazani — AI Developer
 # Course: AI Developer Program — Hebrew University 2026
 
@@ -26,7 +26,7 @@ from utils.references import CASH_PAYMENT_CITATIONS
 # PAGE CONFIG
 # ============================================================
 st.set_page_config(
-    page_title="Bike Sales AI Pipeline",
+    page_title="Bike Sales AI Pipeline — Hebrew University 2026 Final Project",
     page_icon="🚲",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -141,7 +141,7 @@ page = st.selectbox(
 # PAGE 1 — BUSINESS OVERVIEW
 # ============================================================
 if page == "🏠 Business Overview":
-    st.title("🚲 Bike Sales AI Pipeline")
+    st.title("🚲 Bike Sales AI Pipeline — Hebrew University 2026 Final Project")
     st.markdown("**Author:** Rachel Barazani — AI Developer | **Course:** AI Developer Program — Hebrew University 2026")
     st.divider()
 

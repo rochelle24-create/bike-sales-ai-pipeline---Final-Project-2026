@@ -1,5 +1,6 @@
 # utils/progress.py
 # Live progress display and logging for the Bike Sales AI Pipeline
+# — Hebrew University 2026 Final Project
 # Author: Rachel Barazani — AI Developer
 # Course: AI Developer Program — Hebrew University 2026
 
@@ -25,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 class Progress:
     """
-    Live progress tracker for the Bike Sales AI Pipeline.
+    Live progress tracker for the Bike Sales AI Pipeline — Hebrew University 2026 Final Project.
     Prints real-time status to terminal and logs to logs/pipeline.log
     """
 
@@ -41,7 +42,8 @@ class Progress:
         self.pipeline_start = time.time()
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print("\n" + "╔" + "═" * 58 + "╗")
-        print("║" + "  BIKE SALES AI PIPELINE — RUNNING".center(58) + "║")
+        print("║" + "BIKE SALES AI PIPELINE — HEBREW UNIVERSITY 2026".center(58) + "║")
+        print("║" + "FINAL PROJECT — RUNNING".center(58) + "║")
         print("╠" + "═" * 58 + "╣")
         print(f"║  Backend: {backend:<47}║")
         print(f"║  Started: {now:<47}║")
