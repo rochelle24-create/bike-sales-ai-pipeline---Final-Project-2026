@@ -16,6 +16,12 @@
 
 ---
 
+## Demo Video
+
+A walkthrough of the Streamlit app including live predictions, model results, business insights, and the cash payment recommendation.
+
+[Watch on Loom](https://www.loom.com/share/835b8fcdaf0148d7a3eb858b34b2b278)
+
 ## Live Pipeline Demo
 
 A real-time recording of the full two-crew CrewAI pipeline running end to end, including live progress updates.
