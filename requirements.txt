@@ -1,5 +1,5 @@
 # ============================================================
-# Bike Sales AI Pipeline — Requirements
+# Bike Sales AI Pipeline — Hebrew University 2026 Final Project — Requirements
 # Author: Rachel Barazani — AI Developer
 # Course: AI Developer Program — Hebrew University 2026
 # ============================================================

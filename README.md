@@ -1,4 +1,4 @@
-# Bike Sales AI Pipeline
+# Bike Sales AI Pipeline — Hebrew University 2026 Final Project
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![CrewAI](https://img.shields.io/badge/CrewAI-Multi--Agent-purple)

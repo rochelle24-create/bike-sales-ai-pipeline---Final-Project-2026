@@ -18,8 +18,8 @@ def get_llm() -> LLM:
     """
     print("\n" + "╔" + "═" * 58 + "╗")
     print("║" + "BIKE SALES AI PIPELINE".center(58) + "║")
+    print("║" + "HEBREW UNIVERSITY 2026 FINAL PROJECT".center(58) + "║")
     print("║" + "Rachel Barazani — AI Developer".center(58) + "║")
-    print("║" + "Hebrew University 2026".center(58) + "║")
     print("╠" + "═" * 58 + "╣")
     print("║  Select AI backend:                                      ║")
     print("║                                                          ║")

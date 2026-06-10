@@ -254,7 +254,7 @@ task_model_card = Task(
 
     STEP 2 — WRITE artifacts/model_card.md:
 
-    # Bike Sales AI Pipeline — Model Card
+    # Bike Sales AI Pipeline — Hebrew University 2026 Final Project — Model Card
     **Author:** Rachel Barazani — AI Developer
     **Course:** AI Developer Program — Hebrew University 2026
 
