@@ -5,7 +5,7 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-Live-red)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://bikesalesfinalprojectrachelbarazani.streamlit.app)
+**[Open the Live Streamlit App](https://bikesalesfinalprojectrachelbarazani.streamlit.app/#bike-sales-ai-pipeline-hebrew-university-2026-final-project)**
 
 ---
 

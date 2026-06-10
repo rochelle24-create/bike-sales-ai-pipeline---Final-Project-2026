@@ -72,7 +72,7 @@ This prevents any future feature mismatch regardless of model changes.
 
 ### Streamlit Cloud
 
-- URL: https://bikesalesfinalprojectrachelbarazani.streamlit.app
+- URL: https://bikesalesfinalprojectrachelbarazani.streamlit.app/#bike-sales-ai-pipeline-hebrew-university-2026-final-project
 - Free tier — public GitHub repo
 - Auto-deploys on every push to main
 - Requirements file: streamlit_requirements.txt (app-only dependencies)
