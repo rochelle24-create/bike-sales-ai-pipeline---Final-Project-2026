@@ -16,6 +16,13 @@
 
 ---
 
+## Live Pipeline Demo
+
+A real-time recording of the full two-crew CrewAI pipeline running end to end, including live progress updates.
+
+[Watch on Loom](https://www.loom.com/share/2e5dbb74ddba4ffebf0587408f12947c)
+
+
 ## Business Problem
 
 A retail bike chain operates 7 stores across the US. They want to grow
